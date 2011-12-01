@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # NLP für historische Dokumente, HS2011
 # Reto Baumgartner
+# ONLY USE PYTHON 3.2+ -- FOR YOUR OWN SAFETY (MENTALLY)
 
 from xml.etree import cElementTree as ET
 from collections import defaultdict
@@ -65,9 +66,9 @@ def writeIntoCorpus(year, genre, corpus):
         elif 1800 <= year and year < 1850:
             t1800_1850.write(corpus)
         elif 1850 <= year and year < 1900:
-	    t1850_1900.write(corpus)
+            t1850_1900.write(corpus)
             #unpickled_corpus = pickle.load(corpus)
-	    #pickle.dump(unpickled_corpus,t1850_1900)
+#pickle.dump(unpickled_corpus,t1850_1900)
         else:
             t1900_2010.write(corpus)
         
@@ -79,9 +80,9 @@ def processFile(file):
         try:
             year = getYear(theTei)
             genre = getGenre(theTei)
-	    if genre in usablegenres:
-            	corpus = extractText(theTei)
-            	writeIntoCorpus(year, genre, corpus)
+            if genre in usablegenres:
+                corpus = extractText(theTei)
+                writeIntoCorpus(year, genre, corpus)
         except:
             pass
     
