@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import division
 '''
@@ -5,7 +6,7 @@ Created on Nov 17, 2011
 
 @author: hernani
 '''
-"Based upon the reference solution of exec. 6; to avoid ugliness of the my own one"
+"Based upon PCL3 material (Rico Sennrich)"
 from collections import defaultdict
 from operator import itemgetter
 import math # Aufg 1.2
@@ -155,13 +156,24 @@ if __name__ == "__main__":
     print(mlm.lang(sentence_de))
     """
 
-   
-    e100 = open("e100-1600_1650.txt","r")
-    for s in e100:
-	print mlm.lang(s)
-    print("Accuracy, w/ symbol-n-gram order: 3") 
+    # 1600-1650
+    e100_1600b1650 = open("e100-1600_1650.txt","r")
+    print("1600-1650: Accuracy, w/ symbol-n-gram order: 3") 
     print(accuracy(m1600b1650,"e100-1600_1650.txt",mlm))
-    e100.close()
+    e100_1600b1650.close()
+
+    # 1650-1700
+    e100_1650b1700 = open("e100-1650_1700.txt","r")
+    print("1650-1700: Accuracy, w/ symbol-n-gram order: 3") 
+    print(accuracy(m1650b1700,"e100-1650_1700.txt",mlm))
+    e100_1650b1700.close()
+
+    # 1850-1900
+    e100_1850b1900 = open("e100-1850_1900.txt","r")
+    print("1850-1900: Accuracy, w/ symbol-n-gram order: 3") 
+    print(accuracy(m1850b1900,"e100-1850_1900.txt",mlm))
+    e100_1850b1900.close()
+
     
 """
     # symbol-based-n-grams
