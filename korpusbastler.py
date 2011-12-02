@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # NLP für historische Dokumente, HS2011
 # Reto Baumgartner
+# ONLY USE PYTHON 3.2+ -- FOR YOUR OWN SAFETY (MENTALLY)
 
 from xml.etree import cElementTree as ET
 from collections import defaultdict
@@ -43,16 +44,15 @@ def getGenre(theTei):
 
 # Extrahiert den Text eines Werkes (ein TEI) auf allen tieferen Ebenen
 def extractText(theTei):
-    #theText = theTei.find(text)
-    #ts = theText.itertext()
-    #t = "\n".join([e.strip() for e in ts])
-    #t = re.sub(r'\n\n+', '\n', t)
-    t = "platzhalter"
+    theText = theTei.find(text)
+    ts = theText.itertext()
+    t = "\n".join([e.strip() for e in ts])
+    t = re.sub(r'\n\n+', '\n', t)
+    #t = "platzhalter"
     return t
 
 # Schreibt den Inhalt eines Werkes (ein TEI) in das entsprechende Korpus
 def writeIntoCorpus(year, genre, corpus):
-    if genre in usablegenres:
         if year < 1600:
             pass
         elif 1600 <= year and year < 1650:
@@ -67,6 +67,8 @@ def writeIntoCorpus(year, genre, corpus):
             t1800_1850.write(corpus)
         elif 1850 <= year and year < 1900:
             t1850_1900.write(corpus)
+            #unpickled_corpus = pickle.load(corpus)
+#pickle.dump(unpickled_corpus,t1850_1900)
         else:
             t1900_2010.write(corpus)
         
@@ -78,8 +80,9 @@ def processFile(file):
         try:
             year = getYear(theTei)
             genre = getGenre(theTei)
-            corpus = extractText(theTei)
-            writeIntoCorpus(year, genre, corpus)
+            if genre in usablegenres:
+                corpus = extractText(theTei)
+                writeIntoCorpus(year, genre, corpus)
         except:
             pass
     
@@ -93,11 +96,15 @@ t1800_1850 = open('t1800_1850.txt','a')
 t1850_1900 = open('t1850_1900.txt','a')
 t1900_2010 = open('t1900_2010.txt','a')
 
-ROOT = "~" # zu setzen!!!
+ROOT = "../daten/Digitale-Bibliothek-Literatur/" # zu setzen!!!
 
+"""
 for filename in glob.glob("%s/*.xml" % ROOT):
     print filename
-    processFile(os.path.join(root, filename))
+    processFile(os.path.join(ROOT, filename))
+"""
+
+processFile(ROOT+"Literatur-Heyse,-Paul.xml")
 
 t1600_1650.close()
 t1650_1700.close()
