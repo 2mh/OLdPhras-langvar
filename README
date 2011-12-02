@@ -1,0 +1,13 @@
+Baumgartner/Hafner/Marques
+
+Dateien:
+--------
+tVON_BIS.txt: 
+- Repräsentative Sprachkorpora
+e100-VON_BIS.txt: 
+- Testsätze, die material
+korpusbastler.py (läuft mit python 3.2+): 
+- Erstellt aus XML-Dateien (TEI-codiert) Textdateien (tVON_BIS.txt)
+langMod.py (läuft mit python 2.7.2+): 
+- Erstellt aus tVON_BIS.txt-Files Sprachmodelle
+- Kann auch Wahrscheinlichkeit von Sätzen ausgeben
