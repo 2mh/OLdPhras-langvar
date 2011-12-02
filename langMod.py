@@ -11,6 +11,8 @@ from collections import defaultdict
 from operator import itemgetter
 import math # Aufg 1.2
 import cPickle as cpickle
+import sys
+import re
 
 #traverse through an iterable, return both the current element and a history of length n-1
 def generate_ngrams(iterable, k, isWordBased):
@@ -156,96 +158,13 @@ if __name__ == "__main__":
     print(mlm.lang(sentence_de))
     """
 
-    # 1600-1650
-    e100_1600b1650 = open("e100-1600_1650.txt","r")
-    print("1600-1650: Accuracy, w/ symbol-n-gram order: 3") 
-    print(accuracy(m1600b1650,"e100-1600_1650.txt",mlm))
-    e100_1600b1650.close()
+    yearBlocks = ["1600_1650","1650_1700","1700_1750","1750_1800","1800_1850","1850_1900"]
+    fileNamePrefix = "e100-"
 
-    # 1650-1700
-    e100_1650b1700 = open("e100-1650_1700.txt","r")
-    print("1650-1700: Accuracy, w/ symbol-n-gram order: 3") 
-    print(accuracy(m1650b1700,"e100-1650_1700.txt",mlm))
-    e100_1650b1700.close()
-
-    # 1700-1750
-    e100_1700b1750 = open("e100-1700_1750.txt","r")
-    print("1700-1750: Accuracy, w/ symbol-n-gram order: 3") 
-    print(accuracy(m1700b1750,"e100-1700_1750.txt",mlm))
-    e100_1700b1750.close()
-
-   # 1750-1800
-    e100_1750b1800 = open("e100-1750_1800.txt","r")
-    print("1750-1800: Accuracy, w/ symbol-n-gram order: 3") 
-    print(accuracy(m1750b1800,"e100-1750_1800.txt",mlm))
-    e100_1750b1800.close()
-
-    # 1850-1900
-    e100_1850b1900 = open("e100-1850_1900.txt","r")
-    print("1850-1900: Accuracy, w/ symbol-n-gram order: 3") 
-    print(accuracy(m1850b1900,"e100-1850_1900.txt",mlm))
-    e100_1850b1900.close()
-
-    
-"""
-    # symbol-based-n-grams
-    print("Accuracy, w/ symbol-n-gram order: 3") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    mlm = MLM("de","TextBerg5000DE.txt",4)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ symbol-n-gram order: 4") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    mlm = MLM("de","TextBerg5000DE.txt",5)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ symbol-n-gram order: 5") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    mlm = MLM("de","TextBerg5000DE.txt",2)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ symbol-n-gram order: 2") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    mlm = MLM("de","TextBerg5000DE.txt",1)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ symbol-n-gram order: 1") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    # Word-based n-grams
-    
-    mlm = MLM("de","TextBerg5000DE.txt",True)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ word-n-gram order: 3") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    mlm = MLM("de","TextBerg5000DE.txt",4,True)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ word-n-gram order: 4") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    mlm = MLM("de","TextBerg5000DE.txt",5,True)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ word-n-gram order: 5") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    mlm = MLM("de","TextBerg5000DE.txt",2,True)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ word-n-gram order: 2") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-    
-    mlm = MLM("de","TextBerg5000DE.txt",1,True)
-    mlm.train("fr","TextBerg5000FR.txt")
-    print("Accuracy, w/ word-n-gram order: 1") 
-    print(accuracy("de","TextBerg100DE.txt",mlm))
-    print(accuracy("fr","TextBerg100FR.txt",mlm))
-"""
+    for yb in yearBlocks:
+        fileName = fileNamePrefix+yb+".txt"
+	e100File = open(fileName,"r")
+	print(yb+": Accuracy, w/ symbol-n-gram order: 3")
+        yb = re.sub("_","-", yb)
+	print(accuracy(yb,fileName,mlm))
+        e100File.close()
