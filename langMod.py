@@ -168,6 +168,12 @@ if __name__ == "__main__":
     print(accuracy(m1650b1700,"e100-1650_1700.txt",mlm))
     e100_1650b1700.close()
 
+    # 1700-1750
+    e100_1700b1750 = open("e100-1700_1750.txt","r")
+    print("1700-1750: Accuracy, w/ symbol-n-gram order: 3") 
+    print(accuracy(m1650b1700,"e100-1700_1750.txt",mlm))
+    e100_1700b1750.close()
+
     # 1850-1900
     e100_1850b1900 = open("e100-1850_1900.txt","r")
     print("1850-1900: Accuracy, w/ symbol-n-gram order: 3") 

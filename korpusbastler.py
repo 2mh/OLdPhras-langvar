@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # NLP für historische Dokumente, HS2011
 # Reto Baumgartner
@@ -96,15 +96,13 @@ t1800_1850 = open('t1800_1850.txt','a')
 t1850_1900 = open('t1850_1900.txt','a')
 t1900_2010 = open('t1900_2010.txt','a')
 
-ROOT = "../daten/Digitale-Bibliothek-Literatur/" # zu setzen!!!
+ROOT = "../daten/Digitale-Bibliothek-Literatur" # zu setzen!!!
 
-"""
 for filename in glob.glob("%s/*.xml" % ROOT):
-    print filename
-    processFile(os.path.join(ROOT, filename))
-"""
+    print(filename)
+    processFile(filename)
 
-processFile(ROOT+"Literatur-Heyse,-Paul.xml")
+#processFile(ROOT+"Literatur-Heyse,-Paul.xml")
 
 t1600_1650.close()
 t1650_1700.close()
