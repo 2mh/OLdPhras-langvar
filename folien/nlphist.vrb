@@ -1,0 +1,15 @@
+\frametitle {Handouts}
+
+  \begin{itemize}
+  \item Diese Vorlage ist für Handouts (zwei Folien pro Seite)
+    vorbereitet.
+  \item Zur Erstellung von Handouts:
+
+    \verb|\documentclass[t]{beamer}|
+
+    in
+
+    \verb|\documentclass[t, handout]{beamer}|
+
+    ändern.
+  \end{itemize}

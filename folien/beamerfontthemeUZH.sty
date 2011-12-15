@@ -1,0 +1,27 @@
+% Time-stamp: <2011-02-22T14:56:04 mxp>
+%
+% This file may be distributed and/or modified under the LaTeX Project
+% Public License
+
+\ProvidesPackage{beamerfontthemeUZH}[2010/10/03]
+
+\RequirePackage{helvet}
+
+\mode<presentation>
+
+\beamer@suppressreplacementstrue% no special font settings
+\setbeamerfont{institute below logo}{series=\bfseries, size*={7}{7}}
+\setbeamerfont{tiny structure}{series=\mdseries,size=\tiny}
+\setbeamerfont{title}{size=\huge,series=\bfseries}
+\setbeamerfont{subtitle}{series=\mdseries,size=\normalsize}
+\setbeamerfont*{author}{size=\normalsize,series=\mdseries}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\footnotesize}
+\setbeamerfont*{footline}{size=\fontsize{5}{5}}
+
+\setbeamerfont{quotation}{shape=\upshape, size=\small}
+\setbeamerfont{quote}{parent=quotation}
+
+\mode<all>
+
+\endinput

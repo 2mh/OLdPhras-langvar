@@ -1,0 +1,18 @@
+% Time-stamp: <2010-10-03T23:16:05 mxp>
+%
+% This file may be distributed and/or modified under the LaTeX Project
+% Public License
+
+\ProvidesPackage{beamerthemeUZHsetup}[2010/10/03]
+
+\def\UZH@formal{formal}
+\def\UZH@informal{informal}
+\let\UZH@style\UZH@informal
+
+\def\UZH@de{de}
+\def\UZH@en{en}
+\let\UZH@language\UZH@de
+
+\newcommand{\UZH@uzh}{%
+  \ifx\UZH@language\UZH@de Universit\"{a}t Z\"{u}rich%
+  \else University of Zurich\fi}

@@ -1,0 +1,119 @@
+% Time-stamp: <2011-02-22T12:53:18 mxp>
+%
+% This file may be distributed and/or modified under the LaTeX Project
+% Public License
+
+\ProvidesPackage{beamerouterthemeUZH}[2010/10/03]
+\RequirePackage{ifthen}
+\RequirePackage{beamerthemeUZHsetup}
+
+\mode<presentation>
+
+% Separation line
+\setbeamersize{text margin left=12mm, text margin right=5mm}
+\newlength\UZH@rule\setlength\UZH@rule{0.25mm}
+
+% Logo
+\ifthenelse{\equal{\UZH@language}{\UZH@en}}{%
+  \pgfdeclareimage[height=8mm]{logo}{uzh_logo_e_pos}%
+}{%
+  \pgfdeclareimage[height=8mm]{logo}{uzh_logo_d_pos}}
+
+% Headline and footline
+\newcommand{\UZH@footline}{%
+  \ifthenelse{\equal{\UZH@style}{\UZH@formal}}{%
+    \insertdate\hspace{2em}%
+    \insertshorttitle, \insertshortauthor\hfill%
+    \insertframenumber/\inserttotalframenumber%
+  }{%
+    \insertdate\hspace{2em}\UZH@uzh, \insertshortinstitute,
+    \insertshorttitle, \insertshortauthor\hfill%
+    \insertframenumber/\inserttotalframenumber%
+  }
+}
+
+\defbeamertemplate{footline}{UZH}{%
+  \begin{beamercolorbox}[leftskip=12mm,rightskip=10mm,ht=1em,dp=1ex]{footline}
+    \usebeamerfont{footline}\UZH@footline\par
+    \vspace{1.55ex}
+  \end{beamercolorbox}%
+}
+
+% Sidebars
+\setbeamertemplate*{sidebar left}{}
+\setbeamertemplate*{sidebar right}{}
+\setbeamertemplate*{sidebar canvas left}{}
+\setbeamertemplate*{sidebar canvas right}{}
+
+% Frame title
+\defbeamertemplate{frametitle}{UZH}{%
+  \vspace*{1mm}
+  {\usebeamerfont*{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle}\\
+}
+
+\defbeamertemplate{frametitle}{UZHformal}{%
+\nointerlineskip%
+  %\vspace*{-0.5mm}
+  \begin{beamercolorbox}[sep=0pt, wd=\paperwidth]{logo}
+    \par
+    \vspace{2.1mm}
+    % Logo
+    \begin{beamercolorbox}[sep=0pt, leftskip=3mm]{logo}
+      \pgfuseimage{logo}\par
+    \end{beamercolorbox}
+    % Institute
+    \begin{beamercolorbox}[sep=0pt, leftskip=12.5mm]{normal text}
+      {\usebeamerfont{institute below logo}\insertinstitute}\par
+    \end{beamercolorbox}
+    % Frame title
+    \begin{beamercolorbox}[sep=0pt, leftskip=24mm, wd=1.2\paperwidth]{frametitle}
+      % Separation line
+      \hspace*{-12mm}{\usebeamercolor[fg]{separation line}\rule[2ex]{\paperwidth}{\UZH@rule}}%
+      \par%
+      \vspace{-3mm}%
+      {\usebeamerfont*{frametitle}\usebeamercolor[fg]{frametitle}%
+        \parbox[t]{\textwidth}{\insertframetitle}}\\
+    \end{beamercolorbox}
+  \end{beamercolorbox}
+}
+
+% Frame title continuations
+\defbeamertemplate*{frametitle continuation}{UZH}{\insertcontinuationcountroman}
+
+\mode<all>
+
+\defbeamertemplate*{title page}{UZH}{%
+  % Logo
+  \begin{beamercolorbox}[sep=0pt, leftskip=-9mm]{logo}
+    \pgfuseimage{logo}\par
+  \end{beamercolorbox}
+  % Institute
+  \begin{beamercolorbox}[sep=0pt, leftskip=0.5mm]{normal text}
+    {\usebeamerfont{institute below logo}\insertinstitute}\par
+  \end{beamercolorbox}
+  % Separation line
+  \hspace*{-12mm}{\usebeamercolor[fg]{separation line}\rule[2ex]{\paperwidth}{\UZH@rule}}%
+  \par
+  \vspace{10mm}
+  % Title
+  \begin{beamercolorbox}[sep=0pt, leftskip=0mm]{title}
+    \usebeamerfont{title}\inserttitle
+  \end{beamercolorbox}
+  % Subtitle
+  \vspace{5mm}
+  \ifx\insertsubtitle\@empty\else\vskip0.25em%
+    {\usebeamerfont{subtitle}\insertsubtitle\par}%
+  \fi%
+  \par
+  \vspace{1ex}
+  % Author
+  \begin{beamercolorbox}[sep=0pt]{author}
+    {\usebeamerfont{author}\insertauthor}\\
+  \end{beamercolorbox}
+  \par\vfill
+  % Date
+  {\usebeamerfont{footline}\insertdate}
+  \vspace*{-\fill}
+}
+
+\endinput

@@ -1,0 +1,41 @@
+% Time-stamp: <2010-10-04T11:45:30 mxp>
+%
+% This file may be distributed and/or modified under the LaTeX Project
+% Public License
+
+\ProvidesPackage{beamerthemeUZH}[2010/10/023]
+\RequirePackage{ifthen}
+\RequirePackage{beamerthemeUZHsetup}
+
+\DeclareOptionBeamer{informal}{\let\UZH@style\UZH@informal}
+\DeclareOptionBeamer{formal}{\let\UZH@style\UZH@formal}
+\DeclareOptionBeamer{german}{\let\UZH@language\UZH@de}
+\DeclareOptionBeamer{english}{\let\UZH@language\UZH@en}
+
+\DeclareOptionBeamer{compress}{\beamer@compresstrue}
+\PassOptionsToClass{xcolor=table,covered,hyperref={bookmarks,colorlinks}}{beamer}
+\ProcessOptionsBeamer
+
+\mode<presentation>
+
+\usecolortheme{UZH}
+\usefonttheme{UZH}
+\useoutertheme{UZH}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamertemplate{itemize item}[default]
+\setbeamertemplate{sections/subsections in toc}[ball]
+\setbeamertemplate{headline}{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{alerted text}[default]
+\def\beamer@andinst{\quad }
+
+\def\maketitle{\ifbeamer@inframe\titlepage\else\frame[t]{\titlepage}\fi%
+  \ifthenelse{\equal{\UZH@style}{\UZH@formal}}{%
+    \setbeamertemplate{frametitle}[UZHformal]}{%
+    \setbeamertemplate{frametitle}[UZH]}%
+  \setbeamertemplate{footline}[UZH]%
+}
+
+\endinput
