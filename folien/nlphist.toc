@@ -1,2 +1,6 @@
 \beamer@endinputifotherversion {3.07pt}
 \select@language {ngerman}
+\beamer@sectionintoc {2}{Trainingskorpus}{4}{0}{1}
+\beamer@sectionintoc {3}{Testkorpus}{14}{0}{2}
+\beamer@sectionintoc {4}{Sprachmodelle}{19}{0}{3}
+\beamer@sectionintoc {5}{Evaluation}{20}{0}{4}

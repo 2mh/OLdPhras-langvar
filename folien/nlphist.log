@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.5.10)  15 DEC 2011 16:30
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.5.10)  15 DEC 2011 17:07
 entering extended mode
  %&-line parsing enabled.
 **nlphist.tex
@@ -1106,55 +1106,55 @@ LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10.95> not available
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./uzh_logo_d_pos.pdf>]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 61.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 64.
 
 [2
 
+] [3
+
+] [4
+
 ]
-LaTeX Font Info:    Try loading font information for T1+pxtt on input line 76.
+LaTeX Font Info:    Try loading font information for T1+pxtt on input line 80.
  (/usr/share/texmf-texlive/tex/latex/pxfonts/t1pxtt.fd
 File: t1pxtt.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Try loading font information for OT1+pxr on input line 76.
+LaTeX Font Info:    Try loading font information for OT1+pxr on input line 80.
 
 (/usr/share/texmf-texlive/tex/latex/pxfonts/ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Try loading font information for U+pxsya on input line 76.
+LaTeX Font Info:    Try loading font information for U+pxsya on input line 80.
 
 (/usr/share/texmf-texlive/tex/latex/pxfonts/upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Try loading font information for U+pxsyb on input line 76.
+LaTeX Font Info:    Try loading font information for U+pxsyb on input line 80.
 
 (/usr/share/texmf-texlive/tex/latex/pxfonts/upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Try loading font information for U+pxmia on input line 76.
+LaTeX Font Info:    Try loading font information for U+pxmia on input line 80.
 
 (/usr/share/texmf-texlive/tex/latex/pxfonts/upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Try loading font information for U+pxsyc on input line 76.
+LaTeX Font Info:    Try loading font information for U+pxsyc on input line 80.
 
 (/usr/share/texmf-texlive/tex/latex/pxfonts/upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
-) [3
-
-] [4
-
-] [5
+) [5
 
 ] [6
 
 ] [7
 
-]
-[8
+] [8
 
 ] [9
 
-] [10
+]
+[10
 
 ] [11
 
@@ -1165,6 +1165,16 @@ File: upxsyc.fd 2000/12/14 v1.0
 ] [14
 
 ] [15
+
+] [16
+
+] [17
+
+] [18
+
+] [19
+
+] [20
 
 ]
 \tf@nav=\write5
@@ -1178,10 +1188,10 @@ File: upxsyc.fd 2000/12/14 v1.0
 
  (./nlphist.aux) ) 
 Here is how much of TeX's memory you used:
- 13876 strings out of 494363
- 236381 string characters out of 1168260
+ 13885 strings out of 494363
+ 236487 string characters out of 1168260
  318456 words of memory out of 3000000
- 16651 multiletter control sequences out of 15000+50000
+ 16652 multiletter control sequences out of 15000+50000
  44891 words of font info for 77 fonts, out of 3000000 for 9000
  481 hyphenation exceptions out of 8191
  45i,13n,51p,351b,445s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1190,9 +1200,9 @@ hare/texmf-texlive/fonts/type1/public/pxfonts/pxsya.pfb></usr/share/texmf-texli
 ve/fonts/type1/public/txfonts/t1xtt.pfb></usr/share/texmf-texlive/fonts/type1/u
 rw/helvetic/uhvb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/helvetic/uhvr8
 a.pfb>
-Output written on nlphist.pdf (15 pages, 89882 bytes).
+Output written on nlphist.pdf (20 pages, 95739 bytes).
 PDF statistics:
- 152 PDF objects out of 1000 (max. 8388607)
- 34 named destinations out of 1000 (max. 500000)
+ 184 PDF objects out of 1000 (max. 8388607)
+ 42 named destinations out of 1000 (max. 500000)
  62 words of extra memory for PDF output out of 10000 (max. 10000000)
 
