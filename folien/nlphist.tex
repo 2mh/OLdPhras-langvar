@@ -1,0 +1,190 @@
+% -*- coding: utf-8 -*-
+\documentclass[t]{beamer} % Add option ``handout'' to produce handouts
+\usepackage[english, ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{pxfonts}
+
+\usetheme[german, informal]{UZH} % Available options: german (default), english,
+                                 % informal (default), formal
+
+\mode<presentation>
+{
+  \setbeamercovered{transparent}
+
+  % For gray section slides
+  \AtBeginSection[]{%
+    \setbeamercolor{background canvas}{bg=UZHgray}
+    \setbeamercolor{frametitle}{bg=UZHgray, fg=white}
+    \begin{frame}<beamer>[plain]
+      \frametitle{\insertsection}
+    \end{frame}
+    \setbeamercolor{background canvas}{bg=white}
+    \setbeamercolor{frametitle}{bg=white, fg=UZHblue}
+  }
+}
+
+\mode<handout>
+{
+  \usepackage{pgfpages}
+  \pgfpagesuselayout{2 on 1}[a4paper, border shrink=5mm]
+}
+
+\newcommand{\first}[1]{\emph{#1}}
+\newcommand{\q}[1]{\iflanguage{ngerman}{\flqq#1\frqq}{``#1''}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[Sprachvarianten]{Sprachvarianten des Deutschen im Zeitraum 1600 bis heute}
+\subtitle{Vorlesung: Sprachtechnologie für historische Dokumente: Konzepte und Anwendungen (HS~2011)}
+\institute[Institut für Computerlinguistik]{Institut für Computerlinguistik\\
+Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
+\author[Hafner, Marques~Madeira, Baumgartner]{Simon Hafner, Hernani Marques~Madeira, Reto Baumgartner}
+\date{\today}
+
+
+
+\begin{document}
+% NOTE: Do not enclose \maketitle in a frame, or switching to the
+%       normal templates will not work!
+\maketitle
+
+\section*{Problemstellung}
+
+\begin{frame}
+  \frametitle{Problemstellung}
+  Erkennung der Entstehungszeit \\
+  historischer Texte nach 1600
+  \vspace*{1ex}
+  
+  Lösungsansatz mit Hilfe eines n"=Gramm"=Sprachmodells
+\end{frame}
+
+\section*{Trainingskorpus}
+
+\begin{frame}
+  \frametitle{Daten für das Trainingskorpus}
+  Digitale Bibliothek
+  \vspace*{1ex}
+  
+  Bereich Literatur
+  \vspace*{1ex}
+  
+  Nach den Regeln der Text Encoding Initiative (TEI)
+  
+  \url{http://www.tei-c.org/index.xml}
+\end{frame}
+
+\begin{frame}
+  \frametitle{TEI-Format}
+  Mehrere Werke in einem XML"=File
+  \vspace*{1ex}
+  
+  Einzelne Werke repräsentiert durch Knoten mit dem Tag «TEI»
+  \begin{itemize}
+  \item Literaturgenre:
+    \begin{itemize}
+    \item \texttt{TEI/teiHeader/profileDesc/textClass/keywords/term}    
+    \item \texttt{prose}, \texttt{drama}, \texttt{verse}
+    \end{itemize}
+    \vspace*{1ex}
+    \pause
+    
+  \item Erstellungsdatum: 
+    \begin{itemize}
+    \item \texttt{TEI/teiHeader/profileDesc/creation/date}   
+    \item \texttt{notBefore=''1680'' notAfter=''1983''}
+    \end{itemize}
+    \vspace*{1ex}
+    \pause
+    
+  \item Text:\\
+    \begin{itemize}
+    \item \texttt{TEI/text}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Werkzeug zur Erstellung des Trainingskorpus}
+  \texttt{korpusbastler.py}
+  \vspace*{1ex}
+  
+  In Python codiert
+  \vspace*{1ex}
+  
+  Einsetzbar ab Python 3.2
+  
+  Gründe dazu:
+  \begin{itemize}
+  \item Eher neue Funktion \texttt{xml.etree.cElementTree.itertext()}
+  \item Einfachere Arbeit mit Encodings ab Python 3.x
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Werkzeug zur Erstellung des Trainingskorpus}
+  Für jedes enthaltene Werk:
+  
+  \begin{itemize}
+  \item Literaturgenre:
+    \begin{itemize}
+    \item Weiterverarbeitung der Genres \item \texttt{prose}, \texttt{drama} 
+    \item Keine Textextraktion bei Genres wie \texttt{verse}
+    \end{itemize}
+    \vspace*{1ex}
+    \pause
+
+  \item Erstellungsdatum:
+    \begin{itemize}
+    \item \texttt{notBefore, notAfter}: Lebensdaten des Autors
+    \item Mögliches Erstellungsjahr: Mitte zwischen den Jahren 
+    \item Einteilung in Korpora nach halben Jahrhunderten mithilfe des Erstellungsjahres
+    \end{itemize}
+    \vspace*{1ex}
+    \pause
+    
+  \item Text:
+    \begin{itemize}
+    \item Extraktion des Textes auf allen Tiefen
+    \item Mit \texttt{xml.etree.cElementTree.itertext()}
+    \item Schreiben in entsprechende Korpusdateien
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trainingskorpora für die Sprachmodelle}
+  \begin{tabular}{ll}
+  Sprachstufe & Anzahl Wörter im Korpus
+  \vspace*{1ex}\\
+  1600--1650 & \\
+  1650--1700 & \\
+  1700--1750 & \\
+  1750--1800 & \\
+  1800--1850 & \\
+  1850--1900 & \\
+  1900--     & 
+  \end{tabular}
+\end{frame}
+
+\section*{Testkorpus}
+
+\begin{frame}
+  \frametitle{Testkorpora}
+  \begin{itemize}
+  \item Aus \url{http://de.wikisource.org/}\pause
+  \vspace*{1ex}
+  \item 100 Sätze pro Sprachstufe\pause
+  \item d.\,h. 20 Sätze pro Jahrzehnt\pause
+  \vspace*{1ex}
+  \item Genres entsprechen dem Trainingskorpus
+  \end{itemize}  
+\end{frame}
+
+
+\end{document}
+
+%%% Local variables:
+%%% TeX-PDF-mode: t
+%%% End:
