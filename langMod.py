@@ -47,13 +47,12 @@ def accuracy(lang,fileName,mlm):
     return noOfTrue / noOfLines
 
 class MLM():
-    def __init__(self,lang,train_file,order=3,isWordBased=False):
+    def __init__(self,order=3,isWordBased=False):
         self.order = order
         self.isWordBased = isWordBased
         self.langModels = {}
-        self.langModels[lang] = LM(train_file,self.order,self.isWordBased)
         
-    def train(self, lang,train_file):
+    def train(self,lang,train_file):
         self.langModels[lang] = LM(train_file,self.order,self.isWordBased)
         
     # Return language with smallest -log for a given sentence, e. g. "de"
@@ -116,55 +115,49 @@ class LM():
             
 if __name__ == "__main__":
 
-    m1600b1650 = "1600-1650"
-    m1650b1700 = "1650-1700"
-    m1700b1750 = "1700-1750"
-    m1750b1800 = "1750-1800"
-    m1800b1850 = "1800-1850"
-    m1850b1900 = "1850-1900"
-    
-    """
-    # Hiermit wird das Object-File kreiert, das die Sprachmodelle enthält.
+	timeRanges = [ "1600_1650", "1650_1700", "1700_1750", "1750_1800", "1800_1850", "1850_1900", "1900_2010"]
+	gramTypes = ["Z","W"] # Z = symbol-based (Z) and word-based (W)
+	gramOrders = range(1,7) # for n-gram order 1-6
 
-    mlm = MLM(m1600b1650,"t1600_1650.txt")
-    print m1600b1650 + " finished"
-    mlm.train(m1650b1700,"t1650_1700.txt")
-    print m1650b1700 + " finished"
-    mlm.train(m1700b1750,"t1700_1750.txt")
-    print m1700b1750 + " finished"
-    mlm.train(m1750b1800,"t1750_1800.txt")
-    print m1750b1800 + " finished"
-    mlm.train(m1800b1850,"t1800_1850.txt")
-    print m1800b1850 + " finished"
-    mlm.train(m1850b1900,"t1850_1900.txt")
-    print m1850b1900 + " finished"
+	if (len(sys.argv) > 1): 
+		for gramType in gramTypes:
+			isWordBased = False
+			if gramType == "W":
+				isWordBased = True
+			for gramOrder in gramOrders:
+				print "-"*72
+				mlm = MLM(gramOrder,isWordBased)
+				langModelsFileName = "langModels"+gramType+str(gramOrder)+".pyObj"
+				for timeRange in timeRanges:
+					print "Creating language model (n-gram-Type, n-gram-order, time range): " + gramType + " " + str(gramOrder) + " " + timeRange
+					corpusFileName = "t"+timeRange+".txt"
+					mlm.train(timeRange, corpusFileName)
+				print "-- Writing language model in file (n-gram-Type, n-gram-Order, no of time ranges): " + gramType + " " + str(gramOrder) + " " + str(len(timeRanges))
+				langModelsFile = open(langModelsFileName,"w")
+				cpickle.dump(mlm,langModelsFile)
+				langModelsFile.close()
+				print "---- written"
+	else:
+    	# Hier wird das Sprachmodell aus einer Datei genutzt; Geschwindigkeit++
+		fileNamePrefix = "e100-"
+		for gramType in gramTypes:
+			for gramOrder in gramOrders:
+				print 72*"-"
+				langModelsFileName = "langModels"+gramType+str(gramOrder)+".pyObj"
+				langModelsFile = open(langModelsFileName,"r")
+				print "Loading file: " + langModelsFileName
+				mlm = cpickle.load(langModelsFile)
+				langModelsFile.close()
+				for yb in timeRanges:
+					fileName = fileNamePrefix+yb+".txt"
+					e100File = open(fileName,"r")
+					print(yb+": Accuracy (gram type, gram order): " + gramType + " " + str(gramOrder))
+					print(accuracy(yb,fileName,mlm))
+					e100File.close()
+"""
+# Testsatz
+sentence_de = "So gewiß es ist, daß sich die protestantischen Land- und Dorfpfarrer ehedessen in dem besten Wohlstande ihres Hauswesens befunden haben, eben so unwidersprechlich ist es im Gegentheil, daß die meisten dieser Herren gegenwärtig von ihrer Besoldung und mit ihren Einkünften die nothdürftigen Ausgaben nicht mehr bestreiten können."
 
-    langModelsFile = open("langModels.pyObj","w")
-    cpickle.dump(mlm,langModelsFile)
-    langModelsFile.close()
-    """
-
-    # Hier wird das Sprachmodell aus einer Datei genutzt; Geschwindigkeit++
-    langModelsFile = open("langModels.pyObj","r")
-    mlm = cpickle.load(langModelsFile)
-    langModelsFile.close()
-
-
-    """
-    # Testsatz
-    sentence_de = "So gewiß es ist, daß sich die protestantischen Land- und Dorfpfarrer ehedessen in dem besten Wohlstande ihres Hauswesens befunden haben, eben so unwidersprechlich ist es im Gegentheil, daß die meisten dieser Herren gegenwärtig von ihrer Besoldung und mit ihren Einkünften die nothdürftigen Ausgaben nicht mehr bestreiten können."
-
-    print(sentence_de)
-    print(mlm.lang(sentence_de))
-    """
-
-    yearBlocks = ["1600_1650","1650_1700","1700_1750","1750_1800","1800_1850","1850_1900"]
-    fileNamePrefix = "e100-"
-
-    for yb in yearBlocks:
-        fileName = fileNamePrefix+yb+".txt"
-	e100File = open(fileName,"r")
-	print(yb+": Accuracy, w/ symbol-n-gram order: 3")
-        yb = re.sub("_","-", yb)
-	print(accuracy(yb,fileName,mlm))
-        e100File.close()
+print(sentence_de)
+print(mlm.lang(sentence_de))
+"""
