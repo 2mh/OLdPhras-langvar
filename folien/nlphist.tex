@@ -60,7 +60,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \item Im Rahmen des Projekts OLdPhras\footnote{URL: \url{http://colloc.germa.unibas.ch/oldphras/ (17.12.2011)}}
   \item Unser Code (public domain) verfügbar. URL: \url{https://github.com/2mh/OLdPhras-langvar}
   \item Lösungsansatz: Mit Hilfe eines n"=Gramm"=Sprachmodells (statistisch)
-  \item Frage: Wo liegen die besten Resultate -- bei welcher n"=Gramm"=Ordnung, zeichen"= oder wortbasiert?
+  \item Frage: Wo liegen die besten Resultate -- bei welcher n"=Gramm"=Ordnung?
   \end{itemize}
 \end{frame}
 
@@ -195,7 +195,6 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \item Basierend auf Übungen in PCL3-HS11\pause
   \vspace*{1ex}
   \item Zeichenbasierte n-Gramm-Modelle: 1- bis 6-Gramme\pause
-  \item Wortbasierte n-Gramm-Modelle: 1- bis 6-Gramme \pause
   \item Somit: Insg. 12 Modelle \pause
   \item Smoothing für unvorhandene Sequenzen (arbiträr): $10^(-8)$
   \vspace*{1ex}
@@ -207,7 +206,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \frametitle{Werkzeug zum Training der Daten}
   \texttt{langMod.py}
   \begin{itemize}
-  \item Funktion \emph{generate\_ngrams()} liefert n-Gramme zurück (zeichen- oder wortbasiert); ist ein Generator\pause
+  \item Funktion \emph{generate\_ngrams()} liefert n-Gramme zurück (zeichenbasiert); ist ein Generator
   \item Klasse \emph{LM} speichert (bedingte) n-Gramm-Wahrscheinlichkeiten pro Sprachvariante\pause
   \item Klasse \emph{MLM} speichert LM-Modelle
   \vspace*{1ex}
@@ -220,11 +219,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \item \texttt{timeRanges = [ "1600\_1650", "1650\_1700", "1700\_1750", "1750\_1800", "1800\_1850", "1850\_1900", "1900\_2010"]}
   	\begin{itemize}
   	\item Training von sieben (deutschen) Sprachvarianten in 50er Jahre Blöcke; Ausnahme bei modernen Sprache
-  	\end{itemize}\pause
-  \item \texttt{gramTypes = [''Z'',''W''] \# symbol-based (Z) and word-based (W)}
-  	\begin{itemize}
-   	\item n-Gramm-Arten: Zeichenbasiert, wortbasiert
-  	\end{itemize}\pause
+  	\end{itemize}
   \item \texttt{gramOrders = range(1,7) \# for n-gram order 1-6}
   	\begin{itemize}
    	\item n-Gramm-Ordnungen: 1-6 (5 und 6 haben eine (sehr) kritische Komplexität)
@@ -293,6 +288,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \begin{itemize}
   \item Weitere statistische Masse einführen\pause
   \item Smoothing-Algorithmus\pause
+  \item Wort-n-Gramme
   \end{itemize}  
 \end{frame}
 
