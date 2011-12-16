@@ -60,23 +60,21 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   Lösungsansatz mit Hilfe eines n"=Gramm"=Sprachmodells
   \vspace*{1ex}\pause
   
-  Wo liegen die besten Resulatate -- bei welcher n"=Gramm"=Ordnung, zeichen"= oder wortbasiert?
+  Wo liegen die besten Resultate -- bei welcher n"=Gramm"=Ordnung, zeichen"= oder wortbasiert?
 \end{frame}
 
 \section{Trainingskorpus}
 
 \begin{frame}
   \frametitle{Daten für das Trainingskorpus}
-  Digitale Bibliothek
-  %XXX Quelle des Korpus
+  Deutsches Textarchiv\footnote{URL: \url{http://www.deutschestextarchiv.de/} (17.12.2011)}\\
   \vspace*{1ex}
   
   Bereich Literatur
   \vspace*{1ex}
   
-  Nach den Regeln der Text Encoding Initiative (TEI)
+  Nach den Regeln der Text Encoding Initiative (TEI-P5\footnote{URL: \url{http://www.tei-c.org/index.xml} (17.12.2011)})
   
-  \url{http://www.tei-c.org/index.xml}
 \end{frame}
 
 \begin{frame}
@@ -97,7 +95,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \item Erstellungsdatum: 
     \begin{itemize}
     \item \texttt{TEI/teiHeader/profileDesc/creation/date}   
-    \item \texttt{notBefore=''1680'' notAfter=''1983''}
+    \item \texttt{notBefore=''1840'' notAfter=''1902''} (z. B. bei Texten von Emile Zola, geb. 1840, $\dagger$ 1902)
     \end{itemize}
     \vspace*{1ex}
     \pause
@@ -219,17 +217,17 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \frametitle{Training der Daten}
   \begin{itemize}
   \item \texttt{timeRanges = [ "1600\_1650", "1650\_1700", "1700\_1750", "1750\_1800", "1800\_1850", "1850\_1900", "1900\_2010"]}\pause
-  \begin{itemize}
-  \item Training von sieben (deutschen) Sprachvarianten in 50er Jahre Blöcke; Ausnahme bei modernen Sprache
-  \end{itemize}
-  \item \texttt{gramTypes = ["Z","W"] # symbol-based (Z) and word-based (W)}\pause
-  \begin{itemize}
-   \item n-Gramm-Arten: Zeichenbasiert, wortbasiert
-  \end{itemize}
-  \item \texttt{gramOrders = range(1,7) # for n-gram order 1-6}\pause
-  \begin{itemize}
-   \item n-Gramm-Ordnungen: 1-6 (5 und 6 haben eine (sehr) kritische Komplexität)
-  \end{itemize}
+  	\begin{itemize}
+  	\item Training von sieben (deutschen) Sprachvarianten in 50er Jahre Blöcke; Ausnahme bei modernen Sprache
+  	\end{itemize}
+  \item \texttt{gramTypes = \["Z","W"\] \# symbol-based (Z) and word-based (W)}\pause
+  	\begin{itemize}
+   	\item n-Gramm-Arten: Zeichenbasiert, wortbasiert
+  	\end{itemize}
+  \item \texttt{gramOrders = range(1,7) \# for n-gram order 1-6}\pause
+  	\begin{itemize}
+   	\item n-Gramm-Ordnungen: 1-6 (5 und 6 haben eine (sehr) kritische Komplexität)
+  	\end{itemize}
   \end{itemize}  
 \end{frame}
 
