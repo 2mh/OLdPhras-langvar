@@ -205,42 +205,58 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
 
 % 
 \begin{frame}
-  \frametitle{Werkzeug zum Training der Daten / zur Sprachidentifikation }
+  \frametitle{Werkzeug zum Training der Daten}
   \texttt{langMod.py}
   \begin{itemize}
-  \item \pause
-  \vspace*{1ex}
-  \item \pause
-  \item \pause
-  \item 
+  \item Funktion \emph{generate\_ngrams()} liefert n-Gramme zurück (zeichen- oder wortbasiert); ist ein Generator
+  \item Klasse \emph{LM} speichert (bedingte) n-Gramm-Wahrscheinlichkeiten pro Sprachvariante\pause
+  \item Klasse \emph{MLM} speichert LM-Modelle\pause
   \vspace*{1ex}
   \end{itemize}  
 \end{frame}
+
+\begin{frame}
+  \frametitle{Training der Daten}
+  \begin{itemize}
+  \item \texttt{timeRanges = [ "1600\_1650", "1650\_1700", "1700\_1750", "1750\_1800", "1800\_1850", "1850\_1900", "1900\_2010"]}\pause
+  \begin{itemize}
+  \item Training von sieben (deutschen) Sprachvarianten in 50er Jahre Blöcke; Ausnahme bei modernen Sprache
+  \end{itemize}
+  \item \texttt{gramTypes = ["Z","W"] # symbol-based (Z) and word-based (W)}\pause
+  \begin{itemize}
+   \item n-Gramm-Arten: Zeichenbasiert, wortbasiert
+  \end{itemize}
+  \item \texttt{gramOrders = range(1,7) # for n-gram order 1-6}\pause
+  \begin{itemize}
+   \item n-Gramm-Ordnungen: 1-6 (5 und 6 haben eine (sehr) kritische Komplexität)
+  \end{itemize}
+  \end{itemize}  
+\end{frame}
+
 
 % 
 \begin{frame}
-  \frametitle{}
+  \frametitle{Werkzeug zur Sprachidentifikation}
+  \texttt{langMod.py}
   \begin{itemize}
-  \item \pause
-  \vspace*{1ex}
-  \item  \pause
-  \item \pause
-  \item 
-  \vspace*{1ex}
+  \item Funktion \emph{accuracy} liefert wahrscheinlichste Sprachvariante für eine Testzeile zurück
+   \begin{itemize}
+    \item Ein Objekt der Klasse \texttt{MLM} führt wahrscheinlichste Sprache für diese Zeile an\pause
+   \end{itemize}
+  \item Anhand 100 Testzeilen (Dateien \emph{e100-*}) von Sätzen der jeweiligen Sprachvariante messen wir die Genauigkeit (Anzahl Treffer / 100)
   \end{itemize}  
 \end{frame}
 
-% XXX ganz viel
 \section{Ergebnisse}
+% XXX ganz viel
 
 \section{(Mögliche) Verbesserungen}
-% 
 \begin{frame}
   \frametitle{Trainingskorpus}
   \begin{itemize}
   \item Menge Sprachmaterial (ungleich verteilt aktuell)\pause
   \item Textsorten (potenziell ungleich verteilt)\pause
-  \item Nachbearbeitung des Sprachmaterials\pause
+  \item Nachbearbeitung des Sprachmaterials u. U. nötig\pause
   \end{itemize}  
 \end{frame}
 
@@ -251,6 +267,10 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \vspace*{1ex}
   \item Sätze vs. Absätze (letztere (= länger) liefern akuratere Resultate)\pause
   \item Textsorten (potenziell ungleich verteilt, insb. ab 1900 bis heute)\pause
+  \begin{itemize}
+   \item Rechtliche Texte dominieren ab 1940er auf Wikisource
+   \item Andere Textsorten tendenziell nicht public domain
+  \end{itemize}
   \end{itemize}  
 \end{frame}
 
