@@ -20,7 +20,7 @@ for korpus in ["1600_1650", "1650_1700", "1700_1750", "1750_1800", "1800_1850", 
     n = 3
     hist: string
     sum: int
-    language_model = init_table[string, float]
+    language_model = init_table[string, float]()
     input_file = "t" & korpus & ".txt"
     output_file = "k" & korpus
     
@@ -30,10 +30,10 @@ for korpus in ["1600_1650", "1650_1700", "1700_1750", "1750_1800", "1800_1850", 
       if not freqs.has_key(hist):
         freqs[hist] = init_count_table[string](32)
       freqs.mget(hist).inc(word)
-  for history, counts in freqs.pairs():
+  for history, counts in freqs.pairs:
     sum = 0
-    for number in counts.values(): sum.inc(number)
-    for word, count in counts.pairs():
+    for number in counts.values: sum.inc(number)
+    for word, count in counts.pairs:
       language_model[history & join_char & word] = count/sum
-  for key, value in language_model:
+  for key, value in language_model.pairs:
     output_file.write(value & " " & key & "\n")
