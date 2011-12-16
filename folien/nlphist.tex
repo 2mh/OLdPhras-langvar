@@ -52,6 +52,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
 \section*{Problemstellung}
 
 \begin{frame}
+\thispagestyle{empty}
   \frametitle{Problemstellung}
   Erkennung der Entstehungszeit \\
   historischer Texte nach 1600
@@ -60,22 +61,24 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \item Im Rahmen des Projekts OLdPhras\footnote{URL: \url{http://colloc.germa.unibas.ch/oldphras/ (17.12.2011)}}
   \item Unser Code (public domain) verfügbar. URL: \url{https://github.com/2mh/OLdPhras-langvar}
   \item Lösungsansatz: Mit Hilfe eines n"=Gramm"=Sprachmodells (statistisch)
-  \item Frage: Wo liegen die besten Resultate -- bei welcher n"=Gramm"=Ordnung?
+  \item Frage: Wo liegen die besten Resultate -- bei welcher n"=Gramm"=Ordnung, zeichen"= oder wortbasiert?
   \end{itemize}
 \end{frame}
 
 \section{Trainingskorpus (Reto Baumgartner)}
 
 \begin{frame}
+\thispagestyle{empty}
   \frametitle{Daten für das Trainingskorpus}
-  Deutsches Textarchiv\footnote{URL: \url{http://www.deutschestextarchiv.de/} (17.12.2011)}\\
+  \begin{itemize}
+  \item Deutsches Textarchiv\footnote{URL: \url{http://www.deutschestextarchiv.de/} (17.12.2011)}\\
   \vspace*{1ex}
   
-  Bereich Literatur
+  \item Bereich Literatur
   \vspace*{1ex}
   
-  Nach den Regeln der Text Encoding Initiative (TEI-P5\footnote{URL: \url{http://www.tei-c.org/index.xml} (17.12.2011)})
-  
+  \item Nach den Regeln der Text Encoding Initiative (TEI-P5\footnote{URL: \url{http://www.tei-c.org/index.xml} (17.12.2011)})
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -206,7 +209,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \frametitle{Werkzeug zum Training der Daten}
   \texttt{langMod.py}
   \begin{itemize}
-  \item Funktion \emph{generate\_ngrams()} liefert n-Gramme zurück (zeichenbasiert); ist ein Generator
+  \item Funktion \emph{generate\_ngrams()} liefert n-Gramme zurück (zeichen- oder wortbasiert); ist ein Generator\pause
   \item Klasse \emph{LM} speichert (bedingte) n-Gramm-Wahrscheinlichkeiten pro Sprachvariante\pause
   \item Klasse \emph{MLM} speichert LM-Modelle
   \vspace*{1ex}
@@ -219,7 +222,11 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \item \texttt{timeRanges = [ "1600\_1650", "1650\_1700", "1700\_1750", "1750\_1800", "1800\_1850", "1850\_1900", "1900\_2010"]}
   	\begin{itemize}
   	\item Training von sieben (deutschen) Sprachvarianten in 50er Jahre Blöcke; Ausnahme bei modernen Sprache
-  	\end{itemize}
+  	\end{itemize}\pause
+  \item \texttt{gramTypes = [''Z'',''W''] \# symbol-based (Z) and word-based (W)}
+  	\begin{itemize}
+   	\item n-Gramm-Arten: Zeichenbasiert, wortbasiert
+  	\end{itemize}\pause
   \item \texttt{gramOrders = range(1,7) \# for n-gram order 1-6}
   	\begin{itemize}
    	\item n-Gramm-Ordnungen: 1-6 (5 und 6 haben eine (sehr) kritische Komplexität)
@@ -270,25 +277,9 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
 
 \begin{frame}
   \frametitle{Ergebnisse}
-  \begin{tabular}{l|ccccccc}
-    & 1600-1650 & 1650-1700 & 1700-1750 & 1750-1800 & 1850-1900 &
-    1900-2010 \\
-    \hline
-    Unigramm & 0.54 & 0.5 & 0.42 & 0.09 & 0.03 & 0.07 & 0.16 \\
-    Bigramm & 0.73 & 0.54 & 0.31 & 0.25 & 0.38 & 0.61 & 0.09 \\
-    Trigramm & 0.65 & 0.68 & 0.22 & 0.46 & 0.52 & 0.16 \\
-    4-gramm & 0.66 & 0.8 & 0.2 & 0.5 & 0.44 & 0.49 & 0.12 \\
-    5-gramm & 0.53 & 0.82 & 0.12 & 0.46 & 0.45 & 0.6 & 0.01 \\
-    6-gramm & 0.39 & 0.86 & 0.1 & 0.32 & 0.53 & 0.63 & 0.0 \\
-  \end{tabular}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Kritikpunkte}
   \begin{itemize}
   \item Weitere statistische Masse einführen\pause
   \item Smoothing-Algorithmus\pause
-  \item Wort-n-Gramme
   \end{itemize}  
 \end{frame}
 
