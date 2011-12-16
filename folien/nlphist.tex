@@ -114,15 +114,15 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \vspace*{1ex}
   
   In Python codiert
-  \vspace*{1ex}
-  
-  Einsetzbar ab Python 3.2
-  
-  Gründe dazu:
-  \begin{itemize}
-  \item Eher neue Funktion \texttt{xml.etree.cElementTree.itertext()}
-  \item Einfachere Arbeit mit Encodings ab Python 3.x
-  \end{itemize}
+%  \vspace*{1ex}
+%  
+%  Einsetzbar ab Python 3.2
+%  
+%  Gründe dazu:
+%  \begin{itemize}
+%  \item Eher neue Funktion \texttt{xml.etree.cElementTree.itertext()}
+%  \item Einfachere Arbeit mit Encodings ab Python 3.x
+%  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -132,7 +132,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \begin{itemize}
   \item Literaturgenre:
     \begin{itemize}
-    \item Weiterverarbeitung der Genres \item \texttt{prose}, \texttt{drama} 
+    \item Weiterverarbeitung der Genres \texttt{prose}, \texttt{drama} 
     \item Keine Textextraktion bei Genres wie \texttt{verse}
     \end{itemize}
     \vspace*{1ex}
@@ -158,17 +158,16 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
 
 \begin{frame}
   \frametitle{Trainingskorpora für die Sprachmodelle}
-  \begin{tabular}{ll}
-  Sprachstufe & Anzahl Wörter im Korpus
+  \begin{tabular}{lrl}
+  Sprachstufe & \multicolumn{2}{l}{Anzahl Wörter im Korpus}
   \vspace*{1ex}\\
-  1600--1650 & 2'574'487 (rund 16 MB)\\
-  1650--1700 & 5'652'759 (rund 34 MB)\\
-  1700--1750 & 2'809'613 (rund 18 MB)\\
-  1750--1800 & 9'101'048 (rund 56 MB)\\
-  1800--1850 & 19'325'579 (rund 118 MB)\\
-  1850--1900 & 27'389'361 (rund 169 MB)\\
-  1900--     & 2'396'123 (rund 15 MB)
-  
+  1600--1650 & 2'574'487 &(rund 16 MB)\\
+  1650--1700 & 5'652'759 &(rund 34 MB)\\
+  1700--1750 & 2'809'613 &(rund 18 MB)\\
+  1750--1800 & 9'101'048 &(rund 56 MB)\\
+  1800--1850 & 19'325'579 &(rund 118 MB)\\
+  1850--1900 & 27'389'361 &(rund 169 MB)\\
+  1900--     & 2'396'123 &(rund 15 MB)
   \end{tabular}
 \end{frame}
 
@@ -181,7 +180,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \vspace*{1ex}
   \item 100 Sätze pro Sprachstufe\pause
   \item d.\,h. 20 Sätze pro Jahrzehnt\pause
-  \item Ausnahme bei Testsatz ab 1900 (rund 10 Sätze je Jahrzehnt)
+  \item Ausnahme bei Testsatz ab 1900 (rund 10 Sätze je Jahrzehnt)\pause
   \vspace*{1ex}
   \item Genres entsprechen dem Trainingskorpus
   \end{itemize}  
@@ -208,9 +207,9 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \frametitle{Werkzeug zum Training der Daten}
   \texttt{langMod.py}
   \begin{itemize}
-  \item Funktion \emph{generate\_ngrams()} liefert n-Gramme zurück (zeichen- oder wortbasiert); ist ein Generator
+  \item Funktion \emph{generate\_ngrams()} liefert n-Gramme zurück (zeichen- oder wortbasiert); ist ein Generator\pause
   \item Klasse \emph{LM} speichert (bedingte) n-Gramm-Wahrscheinlichkeiten pro Sprachvariante\pause
-  \item Klasse \emph{MLM} speichert LM-Modelle\pause
+  \item Klasse \emph{MLM} speichert LM-Modelle
   \vspace*{1ex}
   \end{itemize}  
 \end{frame}
@@ -218,15 +217,15 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
 \begin{frame}
   \frametitle{Training der Daten}
   \begin{itemize}
-  \item \texttt{timeRanges = [ "1600\_1650", "1650\_1700", "1700\_1750", "1750\_1800", "1800\_1850", "1850\_1900", "1900\_2010"]}\pause
+  \item \texttt{timeRanges = [ "1600\_1650", "1650\_1700", "1700\_1750", "1750\_1800", "1800\_1850", "1850\_1900", "1900\_2010"]}
   	\begin{itemize}
   	\item Training von sieben (deutschen) Sprachvarianten in 50er Jahre Blöcke; Ausnahme bei modernen Sprache
-  	\end{itemize}
-  \item \texttt{gramTypes = \["Z","W"\] \# symbol-based (Z) and word-based (W)}\pause
+  	\end{itemize}\pause
+  \item \texttt{gramTypes = [''Z'',''W''] \# symbol-based (Z) and word-based (W)}
   	\begin{itemize}
    	\item n-Gramm-Arten: Zeichenbasiert, wortbasiert
-  	\end{itemize}
-  \item \texttt{gramOrders = range(1,7) \# for n-gram order 1-6}\pause
+  	\end{itemize}\pause
+  \item \texttt{gramOrders = range(1,7) \# for n-gram order 1-6}
   	\begin{itemize}
    	\item n-Gramm-Ordnungen: 1-6 (5 und 6 haben eine (sehr) kritische Komplexität)
   	\end{itemize}
@@ -241,8 +240,8 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \begin{itemize}
   \item Funktion \emph{accuracy} liefert wahrscheinlichste Sprachvariante für eine Testzeile zurück
    \begin{itemize}
-    \item Ein Objekt der Klasse \texttt{MLM} führt wahrscheinlichste Sprache für diese Zeile an\pause
-   \end{itemize}
+    \item Ein Objekt der Klasse \texttt{MLM} führt wahrscheinlichste Sprache für diese Zeile an
+   \end{itemize}\pause
   \item Anhand 100 Testzeilen (Dateien \emph{e100-*}) von Sätzen der jeweiligen Sprachvariante messen wir die Genauigkeit (Anzahl Treffer / 100)
   \end{itemize}  
 \end{frame}
