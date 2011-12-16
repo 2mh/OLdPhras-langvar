@@ -55,15 +55,16 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \frametitle{Problemstellung}
   Erkennung der Entstehungszeit \\
   historischer Texte nach 1600
-  \vspace*{1ex}
-  
-  Lösungsansatz mit Hilfe eines n"=Gramm"=Sprachmodells
-  \vspace*{1ex}\pause
-  
-  Wo liegen die besten Resultate -- bei welcher n"=Gramm"=Ordnung, zeichen"= oder wortbasiert?
+
+  \begin{itemize}
+  \item Im Rahmen des Projekts OLdPhras\footnote{URL: \url{http://colloc.germa.unibas.ch/oldphras/ (17.12.2011)}}
+  \item Unser Code (public domain) verfügbar. URL: \url{https://github.com/2mh/OLdPhras-langvar}
+  \item Lösungsansatz: Mit Hilfe eines n"=Gramm"=Sprachmodells (statistisch)
+  \item Frage: Wo liegen die besten Resultate -- bei welcher n"=Gramm"=Ordnung, zeichen"= oder wortbasiert?
+  \end{itemize}
 \end{frame}
 
-\section{Trainingskorpus}
+\section{Trainingskorpus (Reto Baumgartner)}
 
 \begin{frame}
   \frametitle{Daten für das Trainingskorpus}
@@ -186,7 +187,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \end{itemize}  
 \end{frame}
 
-\section{Sprachmodelle}
+\section{Sprachmodelle (Hernani Marques)}
 
 % n-Gramm
 \begin{frame}
@@ -197,6 +198,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \item Zeichenbasierte n-Gramm-Modelle: 1- bis 6-Gramme\pause
   \item Wortbasierte n-Gramm-Modelle: 1- bis 6-Gramme \pause
   \item Somit: Insg. 12 Modelle \pause
+  \item Smoothing für unvorhandene Sequenzen (arbiträr): $10^(-8)$
   \vspace*{1ex}
   \end{itemize}  
 \end{frame}
@@ -245,10 +247,10 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \end{itemize}  
 \end{frame}
 
-\section{Ergebnisse}
+\section{Ergebnisse (Simon Hafner)}
 % XXX ganz viel
 
-\section{(Mögliche) Verbesserungen}
+\section{Verbesserungsmöglichkeiten (Simon Hafner)}
 \begin{frame}
   \frametitle{Trainingskorpus}
   \begin{itemize}
