@@ -9,10 +9,9 @@ Created on Nov 17, 2011
 "Based upon PCL3 material (Rico Sennrich)"
 from collections import defaultdict
 from operator import itemgetter
-import math # Aufg 1.2
+import math 
 import cPickle as cpickle
 import sys
-import re
 
 #traverse through an iterable, return both the current element and a history of length n-1
 def generate_ngrams(iterable, k, isWordBased):
