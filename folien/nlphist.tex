@@ -60,7 +60,7 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   Lösungsansatz mit Hilfe eines n"=Gramm"=Sprachmodells
   \vspace*{1ex}\pause
   
-  Wo liegen die besten Resulatate -- bei welcher n"=Gramm"=Ordnung, zeichen"= oder Wortbasiert?
+  Wo liegen die besten Resulatate -- bei welcher n"=Gramm"=Ordnung, zeichen"= oder wortbasiert?
 \end{frame}
 
 \section{Trainingskorpus}
@@ -162,15 +162,14 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \begin{tabular}{ll}
   Sprachstufe & Anzahl Wörter im Korpus
   \vspace*{1ex}\\
-  1600--1650 & \\
-  1650--1700 & \\
-  1700--1750 & \\
-  1750--1800 & \\
-  1800--1850 & \\
-  1850--1900 & \\
-  1900--     & 
+  1600--1650 & 2'574'487 (rund 16 MB)\\
+  1650--1700 & 5'652'759 (rund 34 MB)\\
+  1700--1750 & 2'809'613 (rund 18 MB)\\
+  1750--1800 & 9'101'048 (rund 56 MB)\\
+  1800--1850 & 19'325'579 (rund 118 MB)\\
+  1850--1900 & 27'389'361 (rund 169 MB)\\
+  1900--     & 2'396'123 (rund 15 MB)
   
-  %XXX anzahl hinzufügen
   \end{tabular}
 \end{frame}
 
@@ -183,17 +182,93 @@ Dozenten: Dr. Cerstin Mahlow, Dr.-Ing. Michael Piotrowski}
   \vspace*{1ex}
   \item 100 Sätze pro Sprachstufe\pause
   \item d.\,h. 20 Sätze pro Jahrzehnt\pause
+  \item Ausnahme bei Testsatz ab 1900 (rund 10 Sätze je Jahrzehnt)
   \vspace*{1ex}
   \item Genres entsprechen dem Trainingskorpus
   \end{itemize}  
-  
-  %XXX Daten zum Testtext 1900-2010
 \end{frame}
 
 \section{Sprachmodelle}
+
+% n-Gramm
+\begin{frame}
+  \frametitle{n-Gramm-Wahrscheinlichkeiten (bedingt)}
+  \begin{itemize}
+  \item Basierend auf Übungen in PCL3-HS11\pause
+  \vspace*{1ex}
+  \item Zeichenbasierte n-Gramm-Modelle: 1- bis 6-Gramme\pause
+  \item Wortbasierte n-Gramm-Modelle: 1- bis 6-Gramme \pause
+  \item Somit: Insg. 12 Modelle \pause
+  \vspace*{1ex}
+  \end{itemize}  
+\end{frame}
+
+% 
+\begin{frame}
+  \frametitle{Werkzeug zum Training der Daten / zur Sprachidentifikation }
+  \texttt{langMod.py}
+  \begin{itemize}
+  \item \pause
+  \vspace*{1ex}
+  \item \pause
+  \item \pause
+  \item 
+  \vspace*{1ex}
+  \end{itemize}  
+\end{frame}
+
+% 
+\begin{frame}
+  \frametitle{}
+  \begin{itemize}
+  \item \pause
+  \vspace*{1ex}
+  \item  \pause
+  \item \pause
+  \item 
+  \vspace*{1ex}
+  \end{itemize}  
+\end{frame}
+
 % XXX ganz viel
-\section{Evaluation}
-% XXX ganz viel
+\section{Ergebnisse}
+
+\section{(Mögliche) Verbesserungen}
+% 
+\begin{frame}
+  \frametitle{Trainingskorpus}
+  \begin{itemize}
+  \item Menge Sprachmaterial (ungleich verteilt aktuell)\pause
+  \item Textsorten (potenziell ungleich verteilt)\pause
+  \item Nachbearbeitung des Sprachmaterials\pause
+  \end{itemize}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Testsätze}
+  \begin{itemize}
+  \item Auswahl ist (zufällig) auf Wikisource erfolgt\pause
+  \vspace*{1ex}
+  \item Sätze vs. Absätze (letztere (= länger) liefern akuratere Resultate)\pause
+  \item Textsorten (potenziell ungleich verteilt, insb. ab 1900 bis heute)\pause
+  \end{itemize}  
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Code}
+  \begin{itemize}
+  \item Das Trainieren von Daten dauert lange (insb. bei Wort-n-Grammen)\pause
+  \vspace*{1ex}
+  \item Multiprozessor-Support einbauen\pause
+  \item Algorithmische Verbesserungen (Zeit-/Raumkomplexität)\pause
+  \item Andere Programmiersprache verwenden\pause
+  \vspace*{1ex}
+  \end{itemize}  
+\end{frame}
+
+\section{Fragen}
+
 \end{document}
 
 %%% Local variables:
