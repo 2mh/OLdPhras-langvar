@@ -3,6 +3,18 @@ import os
 import language_model
 import strutils
 
+proc parseBool(b: string): bool =
+  var e: ref EInvalidValue
+  case b
+  of "true":
+    result = true
+  of "false":
+    result = false
+  else:
+    e.new()
+    e.msg = $b & " is not a bool"
+    raise e
+  
 if os.paramCount() == 0:
   var commands: seq[string] = @[]
   for n in 1..6:
@@ -15,7 +27,7 @@ else:
   var
     korpus_name = os.paramStr(1)
     n = os.paramStr(2).parseInt
-    charBased = bool(os.paramStr(3).parseInt)
+    charBased = parseBool(os.paramStr(3))
     inputFile = open("t" & korpus_name & ".txt")
     outputName = "k" & korpus_name & "W" & $n
     lm = initLanguageModel(n, charBased)
