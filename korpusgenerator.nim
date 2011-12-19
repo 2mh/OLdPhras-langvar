@@ -17,7 +17,7 @@ else:
     n = os.paramStr(2).parseInt
     charBased = bool(os.paramStr(3).parseInt)
     inputFile = open("t" & korpus_name & ".txt")
-    outputName = "k" & korpus_name & "W" & $n
+    outputName = "k" & korpus_name & $charBased & $n
     lm = initLanguageModel(n, charBased)
     outputFile = open(outputName, fmWrite)
   lm.train(inputFile)
