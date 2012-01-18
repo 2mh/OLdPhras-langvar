@@ -5,20 +5,30 @@ import strutils
 type
   TLanguageModel* = object
     model*: TTable[string, float]
-    order: int
-    charBased: bool
+    order*: int
+    charBased*: bool
+  PLanguageModel* = ref TLanguageModel
 
 const
   # this should work in almost all cases
-  joinChar = $'\x01'
+  joinChar = '\x01'
   beginningOfLine = '\x02'
 
-proc initLanguageModel*(order: int, charBased: bool): TLanguageModel =
+template any(container, cond: expr): expr =
+  block:
+    var result = false
+    for it in items(container):
+      if cond:
+        result = true
+        break
+    result
+
+proc newLanguageModel*(order: int, charBased: bool): PLanguageModel =
+  new(result)
   result.model = initTable[string, float](32)
   result.order = order
   result.charBased = charBased
   
-
 template ngrams(basedOn, iter: expr) =
   iterator `ngrams basedOn`*(line: string, n: int): tuple[history: seq[basedOn], word: basedOn] = 
     var history: seq[basedOn] = @[]
@@ -35,7 +45,10 @@ template ngrams(basedOn, iter: expr) =
 ngrams(char, items)
 ngrams(string, split)
 
-proc join(a: openarray[char], sep: string): string =
+proc join(a: openarray[string], sep: char): string =
+  result = a.join($sep)
+
+proc join(a: openarray[char], sep: char): string =
   result = newStringOfCap(a.len*2-1)
   for item in a.items():
     result.add(item)
@@ -65,15 +78,28 @@ proc train*(model: var TLanguageModel, file: TFile) =
     sum = 0
     for number in counts.values: sum.inc(number)
     for word, count in counts.pairs:
-      model.model[history & joinChar & word] = count/sum
+      model.model[history & $joinChar & word] = count/sum
 
-proc load*(file: TFile): TLanguageModel =
-  result.model = init_table[string, float](32)
+proc load*(file: TFile): PLanguageModel =
+  var
+    first = file.readline
+    order: int
+    charBased: bool
+  file.setFilePos(0)
+  
+  # guess model type
+  var grams = first.split(' ')[1].split(joinChar)
+  if any(grams, len(it) > 1):
+    charBased = false
+  order = len(grams)
+  
+  # load file
+  result = newLanguageModel(order, charBased)
   for line in file.lines:
     var splitted = line.split
-    result.model[splitted[1..(-1)].join(joinChar)] = math.log2(splitted[0].parseFloat)
+    result.model[splitted[1]] = splitted[0].parseFloat
   
-proc dump*(model: TLanguageModel, file: TFile) =
+proc dump*(model: PLanguageModel, file: TFile) =
+  # format: float word\x01word\x01word\n
   for key, value in model.model.pairs():
     file.write(formatFloat(value) & " " & key & "\n")
-  
