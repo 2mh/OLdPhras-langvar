@@ -79,7 +79,7 @@ proc train*(model: var TLanguageModel, file: TFile) =
     sum = 0
     for number in counts.values: sum.inc(number)
     for word, count in counts.pairs:
-      model.model[history & $joinChar & word] = count/sum
+      model.model[history & $joinChar & word] = math.log2(count/sum)
 
 proc load*(file: TFile): PLanguageModel =
   var
