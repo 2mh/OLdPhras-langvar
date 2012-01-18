@@ -7,6 +7,7 @@ type
     model*: TTable[string, float]
     order*: int
     charBased*: bool
+    smooth*: float
   PLanguageModel* = ref TLanguageModel
 
 const
@@ -104,3 +105,17 @@ proc dump*(model: PLanguageModel, file: TFile) =
   # format: float word\x01word\x01word\n
   for key, value in model.model.pairs():
     file.write(formatFloat(value) & " " & key & "\n")
+
+proc recognize*(models: seq[PLanguageModel], target: string): seq[tuple[PLanguageModel, float]] =
+  result = @[]
+  var key: string
+  for model in models:
+    var probability: float
+    ngrams(target, model.order, model.charBased):
+      history.add(word)
+      key = history.join(joinChar) # join hack
+      if model.model.hasKey(key):
+        probability += model.model[key]
+      else:
+        probability += model.smooth
+    result.add((model, probability))
