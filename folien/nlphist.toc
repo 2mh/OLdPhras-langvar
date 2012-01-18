@@ -1,8 +1,0 @@
-\beamer@endinputifotherversion {3.10pt}
-\select@language {ngerman}
-\beamer@sectionintoc {2}{Trainingskorpus (Reto Baumgartner)}{3}{0}{1}
-\beamer@sectionintoc {3}{Testkorpus}{13}{0}{2}
-\beamer@sectionintoc {4}{Sprachmodelle (Hernani Marques)}{19}{0}{3}
-\beamer@sectionintoc {5}{Ergebnisse (Simon Hafner)}{29}{0}{4}
-\beamer@sectionintoc {6}{Verbesserungsm\IeC {\"o}glichkeiten (Simon Hafner)}{30}{0}{5}
-\beamer@sectionintoc {7}{Fragen}{48}{0}{6}
