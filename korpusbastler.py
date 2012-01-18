@@ -88,13 +88,13 @@ def processFile(file):
     
     
 # Epochenspezifische Korpora:
-t1600_1650 = open('t1600_1650.txt','a')
-t1650_1700 = open('t1650_1700.txt','a')
-t1700_1750 = open('t1700_1750.txt','a')
-t1750_1800 = open('t1750_1800.txt','a')
-t1800_1850 = open('t1800_1850.txt','a')
-t1850_1900 = open('t1850_1900.txt','a')
-t1900_2010 = open('t1900_2010.txt','a')
+t1600_1650 = open('rawcorp.1600_1650','a')
+t1650_1700 = open('rawcorp.1650_1700','a')
+t1700_1750 = open('rawcorp.1700_1750','a')
+t1750_1800 = open('rawcorp.1750_1800','a')
+t1800_1850 = open('rawcorp.1800_1850','a')
+t1850_1900 = open('rawcorp.1850_1900','a')
+t1900_2010 = open('rawcorp.1900_2010','a')
 
 ROOT = "../daten/Digitale-Bibliothek-Literatur" # zu setzen!!!
 
