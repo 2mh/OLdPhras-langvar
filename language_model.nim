@@ -29,7 +29,7 @@ proc newLanguageModel*(order: int, charBased: bool): PLanguageModel =
   result.order = order
   result.charBased = charBased
   
-template ngrams(basedOn, iter: expr) =
+template ngramiter(basedOn, iter: expr) =
   iterator `ngrams basedOn`*(line: string, n: int): tuple[history: seq[basedOn], word: basedOn] = 
     var history: seq[basedOn] = @[]
     for i in countup(0,n-2):
@@ -42,8 +42,8 @@ template ngrams(basedOn, iter: expr) =
       history.delete(0)
       history.add(word)
 
-ngrams(char, items)
-ngrams(string, split)
+ngramiter(char, items)
+ngramiter(string, split)
 
 proc join(a: openarray[string], sep: char): string =
   result = a.join($sep)
@@ -54,11 +54,13 @@ proc join(a: openarray[char], sep: char): string =
     result.add(item)
     result.add(sep)
 
-template processngrams() = 
-  hist = history.join(joinChar) # join hack
-  if not freqs.has_key(hist):
-    freqs[hist] = init_count_table[string](32)
-  freqs.mget(hist).inc($ word)
+template ngrams(line, order, CharBased: expr, execute: stmt): stmt = 
+  if charBased:
+    for history, word in ngramschar(line, order):
+      execute
+  else: 
+    for history, word in ngramsstring(line, order):
+      execute
 
 proc train*(model: var TLanguageModel, file: TFile) =
   # this overwrites current training data, feel free to change
@@ -68,12 +70,11 @@ proc train*(model: var TLanguageModel, file: TFile) =
     sum: int
     
   for line in lines(file):
-    if model.charBased:
-      for history, word in ngramschar(line, model.order):
-        processngrams()
-    else: 
-      for history, word in ngramsstring(line, model.order):
-        processngrams()
+    ngrams(line, model.order, model.charBased):
+      hist = history.join(joinChar) # join hack
+      if not freqs.has_key(hist):
+        freqs[hist] = init_count_table[string](32)
+      freqs.mget(hist).inc($ word)
   for history, counts in freqs.pairs:
     sum = 0
     for number in counts.values: sum.inc(number)
