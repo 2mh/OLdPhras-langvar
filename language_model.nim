@@ -3,17 +3,25 @@ import math
 import strutils
 
 type
+  TModelKind = enum firstOrder, higherOrder
   TLanguageModel* = object
     model*: TTable[string, float]
     order*: int
     charBased*: bool
-    smooth*: float
+    case kind: TModelKind
+    of firstOrder:
+      smooth: float
+    of higherOrder:
+      fallback*: PLanguageModel
   PLanguageModel* = ref TLanguageModel
 
 const
   # this should work in almost all cases
   joinChar = '\x01'
   beginningOfLine = '\x02'
+
+proc pow(x,y: int): float =
+  result = pow(toFloat(x), toFloat(y))
 
 template any(container, cond: expr): expr =
   block:
@@ -27,6 +35,10 @@ template any(container, cond: expr): expr =
 proc newLanguageModel*(order: int, charBased: bool): PLanguageModel =
   new(result)
   result.model = initTable[string, float](32)
+  if order > 1:
+    result.kind = firstOrder
+  else:
+    result.kind = higherOrder
   result.order = order
   result.charBased = charBased
   
@@ -63,7 +75,7 @@ template ngrams(line, order, CharBased: expr, execute: stmt): stmt =
     for history, word in ngramsstring(line, order):
       execute
 
-proc train*(model: var TLanguageModel, file: TFile) =
+proc train*(model: var PLanguageModel, file: TFile) =
   # this overwrites current training data, feel free to change
   var
     freqs = init_table[string, TCountTable[string]](128)
@@ -76,11 +88,25 @@ proc train*(model: var TLanguageModel, file: TFile) =
       if not freqs.has_key(hist):
         freqs[hist] = init_count_table[string](32)
       freqs.mget(hist).inc($ word)
+
+  # add-one-half smoothing
+  # not that important, we don't mess with the other probabilities
+  if model.kind == firstOrder:
+    model.smooth = math.log2(0.5/toFloat(len(freqs)))
+
   for history, counts in freqs.pairs:
     sum = 0
     for number in counts.values: sum.inc(number)
     for word, count in counts.pairs:
-      model.model[history & $joinChar & word] = math.log2(count/sum)
+      var prob: float
+      if model.kind == firstOrder:
+        prob = math.log2(count/sum)
+      else:
+        # smoothing
+        # here we have to mess with the other probabilities, as there are a lot
+        # of possible histories
+        prob = math.log2(count.toFloat/(sum.toFloat+len(model.fallback.model).pow(model.order-1)*0.5))
+      model.model[history & $joinChar & word] = prob
 
 proc load*(file: TFile): PLanguageModel =
   var
@@ -100,22 +126,39 @@ proc load*(file: TFile): PLanguageModel =
   for line in file.lines:
     var splitted = line.split
     result.model[splitted[1]] = splitted[0].parseFloat
+  # way too small for > 1 order
+  result.smooth = math.log2(0.5/toFloat(len(result.model)))
   
 proc dump*(model: PLanguageModel, file: TFile) =
   # format: float word\x01word\x01word\n
   for key, value in model.model.pairs():
     file.write(formatFloat(value) & " " & key & "\n")
 
-proc recognize*(models: seq[PLanguageModel], target: string): seq[tuple[PLanguageModel, float]] =
+proc get(model: PLanguageModel, key: string): float
+proc get(model: PLanguageModel, key, word: string): float =
+  if model.model.hasKey(key):
+    result = model.model[key]
+  else:
+    if not model.fallback.isNil:
+      result = model.fallback.get(word)/((model.fallback.model.len).pow(model.order-1)*0.5)
+    else:
+      result = model.smooth
+proc get(model: PLanguageModel, key: string): float =
+  result = get(model, key, "")
+  
+iterator pairs[T: enum, U](ary: array[T,U]): tuple[index: T, value: U] =
+  for index in low(T)..high(T):
+    yield(index, ary[index])
+
+proc recognize*[T](models: array[T, PLanguageModel], target: string): seq[tuple[name: T, probability: float]] =
+  # it is advised to set model.fallback to the model of order 1
   result = @[]
   var key: string
-  for model in models:
+  for name, model in pairs(models):
     var probability: float
     ngrams(target, model.order, model.charBased):
-      history.add(word)
-      key = history.join(joinChar) # join hack
-      if model.model.hasKey(key):
-        probability += model.model[key]
-      else:
-        probability += model.smooth
-    result.add((model, probability))
+      var ngram = history
+      ngram.add(word)
+      key = join(ngram,joinChar) # join hack
+      probability += get(model, key, $word)
+    result.add((name: name, probability: probability))
