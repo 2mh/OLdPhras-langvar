@@ -126,8 +126,12 @@ proc load*(file: TFile): PLanguageModel =
   for line in file.lines:
     var splitted = line.split
     result.model[splitted[1]] = splitted[0].parseFloat
-  # way too small for > 1 order
-  result.smooth = math.log2(0.5/toFloat(len(result.model)))
+  if order > 1:
+    result.kind = higherOrder
+  else:
+    result.kind = firstOrder
+  if result.kind == firstOrder:
+    result.smooth = math.log2(0.5/toFloat(len(result.model)))
   
 proc dump*(model: PLanguageModel, file: TFile) =
   # format: float word\x01word\x01word\n
@@ -146,11 +150,11 @@ proc get(model: PLanguageModel, key, word: string): float =
 proc get(model: PLanguageModel, key: string): float =
   result = get(model, key, "")
   
-iterator pairs[T: enum, U](ary: array[T,U]): tuple[index: T, value: U] =
+iterator pairs*[T: enum, U](ary: array[T,U]): tuple[index: T, value: U] =
   for index in low(T)..high(T):
     yield(index, ary[index])
 
-proc recognize*[T](models: array[T, PLanguageModel], target: string): seq[tuple[name: T, probability: float]] =
+proc recognize*[T](models: array[T, PLanguageModel], target: string): seq[tuple[korpus: T, probability: float]] =
   # it is advised to set model.fallback to the model of order 1
   result = @[]
   var key: string
@@ -161,4 +165,4 @@ proc recognize*[T](models: array[T, PLanguageModel], target: string): seq[tuple[
       ngram.add(word)
       key = join(ngram,joinChar) # join hack
       probability += get(model, key, $word)
-    result.add((name: name, probability: probability))
+    result.add((korpus: name, probability: probability))
