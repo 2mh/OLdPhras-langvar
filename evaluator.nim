@@ -19,7 +19,8 @@ if os.paramCount() == 0:
       prepare.add(os.getAppFilename() & " " & $test & " " & $based & " " & $1)
       for order in 2..orders:
         commands.add(os.getAppFilename() & " " & $test & " " & $based & " " & $order)
-  discard execProcesses(prepare, n = 6)
+  if execProcesses(prepare, n = 6) != 0:
+    raise newException(EIO, "preparation failed, aborting!")
   discard execProcesses(commands, n = 6)
 
 else:
