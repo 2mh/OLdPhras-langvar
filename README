@@ -2,12 +2,18 @@ Baumgartner/Hafner/Marques
 
 Dateien:
 --------
-tVON_BIS.txt: 
-- Repräsentative Sprachkorpora
-e100-VON_BIS.txt: 
-- Testsätze, die material
-korpusbastler.py (läuft mit python 3.2+): 
-- Erstellt aus XML-Dateien (TEI-codiert) Textdateien (tVON_BIS.txt)
-langMod.py (läuft mit python 2.7.2+): 
-- Erstellt aus tVON_BIS.txt-Files Sprachmodelle
-- Kann auch Wahrscheinlichkeit von Sätzen ausgeben
+* korpus_bastler.py: Erstellt aus XML-Dateien der Digitalen Bibliothek Literatur Korpora in rund 50-Jahresabschnitten (ohne Gedichte)
+** Ressourcen: http://www.textgrid.de/fileadmin/TextGrid/digitale-bibliothek/Digitale-Bibliothek-Literatur-nur-Texte.zip
+* korpus_splitter.py: Erstellt kreuzvalidierte Dateien aus den oben generierten Korpora, mit Testsätzen:Trainingssätzen im Verhältnis
+20:80
+* langMod.py: Betreibt Sprachidentifikation mit n-gram-Modellen (1-6, wort- und zeichenbasiert)
+** Wird (bald) durch Nimrod-Code ersetzt
+
+Verwendung:
+-----------
+1. wget http://www.textgrid.de/fileadmin/TextGrid/digitale-bibliothek/Digitale-Bibliothek-Literatur-nur-Texte.zip
+2. unzip Digitale-Bibliothek-Literatur-nur-Texte.zip
+3. ./korpus_bastler.py Digitale-Bibliothek-Literatur
+4. ./korpus_splitter.py 2 # default-mässig bereits (nur) zweifache Kreuzvalidierung
+5. ... # Nimrod-Stuff
+6. ... # Nimrod-Stuff
