@@ -9,8 +9,11 @@ import glob, os
 # Ordner mit Quelldateien
 ROOT = "./"
 
-# Anzahl der Korpora für Kreuzvalidierung
-corpora = 20
+# Anzahl der Korpora für Kreuzvalidierung; default: 2
+corpora = 2
+
+if (len(sys.argv) > 1):
+	corpora = int(sys.argv[1])
 
 # Zähler der Sätze
 counter = 0

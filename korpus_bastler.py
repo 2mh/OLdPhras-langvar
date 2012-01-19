@@ -6,8 +6,7 @@
 
 from xml.etree import cElementTree as ET
 from collections import defaultdict
-import re
-import glob, os
+import re, glob, os, sys
 
 tei = ".//{http://www.tei-c.org/ns/1.0}TEI"                 #tei
 teiHeader = ".//{http://www.tei-c.org/ns/1.0}teiHeader"     #tei/teiheader
@@ -97,6 +96,9 @@ t1850_1900 = open('rawcorp.1850_1900','a')
 t1900_2010 = open('rawcorp.1900_2010','a')
 
 ROOT = "../daten/Digitale-Bibliothek-Literatur" # zu setzen!!!
+
+if (len(sys.argv) > 1):
+	ROOT = sys.argv[1]
 
 for filename in glob.glob("%s/*.xml" % ROOT):
     print(filename)
