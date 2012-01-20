@@ -7,7 +7,7 @@ Dateien:
 * korpus_splitter.py: Erstellt kreuzvalidierte Dateien aus den oben generierten Korpora, mit Testsätzen:Trainingssätzen im Verhältnis
 20:80
 * langMod.py: Betreibt Sprachidentifikation mit n-gram-Modellen (1-6, wort- und zeichenbasiert)
-** Wird (bald) durch Nimrod-Code ersetzt
+** auch eine nimrod-Implementation für mehr Speed verfügbar
 
 Verwendung:
 -----------
@@ -22,3 +22,7 @@ Verwendung:
   for file in {train,test}*; do iconv -f utf8 -t ISO-8859-1 -c < $file | sponge > $file; done
 9. ./evaluator
 10. grep correct result* # es wird jedes Resultat einzeln gedumpt, für weitere Analysen
+
+TODO
+----
+Automatisch generierte Tests haben ab und zu sehr kurze Zeilen, was die Erkennung extrem verzerrt
