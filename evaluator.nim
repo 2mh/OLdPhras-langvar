@@ -35,11 +35,11 @@ if os.paramCount() == 0:
         for korpus in low(TKorpus)..high(TKorpus):
           prepare.add("./korpusgenerator" & " " & korpusfile & " " & $based.ord & " " & $order)
           commands.add(os.getAppFilename() & " " & $test & " " & $based & " " & $order & " " & $korpus)
-  if execProcesses(prepare) != 0:
+  if execProcesses(prepare, options = {poParentStreams}) != 0:
     #raise newException(EIO, "corpi not written")
   else:
     echo "korpi generated!"
-  discard execProcesses(commands, n = 6)
+  discard execProcesses(commands, options = {poParentStreams}, n = 6)
 
 else:
   var
