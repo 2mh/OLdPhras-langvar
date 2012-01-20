@@ -19,6 +19,7 @@ const
   # this should work in almost all cases
   joinChar = '\x01'
   beginningOfLine = '\x02'
+  dumpsplit = '\x03'
 
 proc pow(x,y: int): float =
   result = pow(toFloat(x), toFloat(y))
@@ -36,9 +37,9 @@ proc newLanguageModel*(order: int, charBased: bool): PLanguageModel =
   new(result)
   result.model = initTable[string, float](32)
   if order > 1:
-    result.kind = firstOrder
-  else:
     result.kind = higherOrder
+  else:
+    result.kind = firstOrder
   result.order = order
   result.charBased = charBased
   
@@ -63,9 +64,10 @@ proc join(a: openarray[string], sep: char): string =
 
 proc join(a: openarray[char], sep: char): string =
   result = newStringOfCap(a.len*2-1)
-  for item in a.items():
-    result.add(item)
-    result.add(sep)
+  for i in 0..len(a)-1:
+    result.add(a[i])
+    if i < len(a)-1:
+      result.add(sep)
 
 template ngrams(line, order, CharBased: expr, execute: stmt): stmt = 
   if charBased:
@@ -89,8 +91,6 @@ proc train*(model: var PLanguageModel, file: TFile) =
         freqs[hist] = init_count_table[string](32)
       freqs.mget(hist).inc($ word)
 
-  # add-one-half smoothing
-  # not that important, we don't mess with the other probabilities
   if model.kind == firstOrder:
     model.smooth = math.log2(0.5/toFloat(len(freqs)))
 
@@ -99,14 +99,15 @@ proc train*(model: var PLanguageModel, file: TFile) =
     for number in counts.values: sum.inc(number)
     for word, count in counts.pairs:
       var prob: float
+      # smoothing
       if model.kind == firstOrder:
-        prob = math.log2(count/sum)
-      else:
-        # smoothing
-        # here we have to mess with the other probabilities, as there are a lot
-        # of possible histories
+        prob = math.log2((count.toFloat+0.5)/sum.toFloat*1.5)
+        model.model[word] = prob
+      elif model.kind == higherOrder:
         prob = math.log2(count.toFloat/(sum.toFloat+len(model.fallback.model).pow(model.order-1)*0.5))
-      model.model[history & $joinChar & word] = prob
+        model.model[history & $joinChar & word] = prob
+      else:
+        raise newException(EIO, "no order set, don't know how to smooth")
 
 proc load*(file: TFile): PLanguageModel =
   var
@@ -116,7 +117,7 @@ proc load*(file: TFile): PLanguageModel =
   file.setFilePos(0)
   
   # guess model type
-  var grams = first.split(' ')[1].split(joinChar)
+  var grams = first.split(dumpsplit)[1].split(joinChar)
   if any(grams, len(it) > 1):
     charBased = false
   order = len(grams)
@@ -124,7 +125,7 @@ proc load*(file: TFile): PLanguageModel =
   # load file
   result = newLanguageModel(order, charBased)
   for line in file.lines:
-    var splitted = line.split
+    var splitted = line.split(dumpsplit)
     result.model[splitted[1]] = splitted[0].parseFloat
   if order > 1:
     result.kind = higherOrder
@@ -136,14 +137,14 @@ proc load*(file: TFile): PLanguageModel =
 proc dump*(model: PLanguageModel, file: TFile) =
   # format: float word\x01word\x01word\n
   for key, value in model.model.pairs():
-    file.write(formatFloat(value) & " " & key & "\n")
+    file.write(formatFloat(value) & dumpsplit & key & "\n")
 
 proc get(model: PLanguageModel, key: string): float
 proc get(model: PLanguageModel, key, word: string): float =
   if model.model.hasKey(key):
     result = model.model[key]
   else:
-    if not model.fallback.isNil:
+    if model.kind == higherOrder:
       result = model.fallback.get(word)/((model.fallback.model.len).pow(model.order-1)*0.5)
     else:
       result = model.smooth
@@ -165,4 +166,4 @@ proc recognize*[T](models: array[T, PLanguageModel], target: string): seq[tuple[
       ngram.add(word)
       key = join(ngram,joinChar) # join hack
       probability += get(model, key, $word)
-    result.add((korpus: name, probability: probability))
+    result.add((korpus: name, probability: probability.pow(2.0)))

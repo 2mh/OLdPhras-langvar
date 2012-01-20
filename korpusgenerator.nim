@@ -4,23 +4,19 @@ import language_model
 import strutils
 const korpi = ["1600_1650", "1650_1700", "1700_1750", "1750_1800", "1800_1850", "1850_1900", "1900_2010"]
 
-if os.paramCount() == 0:
-  var commands: seq[string] = @[]
-  for n in 1..6:
-    for korpusName in korpi:
-      for charBased in [0, 1]:
-        commands.add(os.getAppFilename() & " " & korpusName & " " & $n & " " & $charBased)
-  discard execProcesses(commands, n = 6)
+var
+  korpus_name = os.paramStr(1)
+  charBased = bool(os.paramStr(2).parseInt)
+  order = os.paramStr(3).parseInt
+  inputFile = open(korpus_name)
+  outputName = "trained_" & korpus_name & $charBased & $order
+  outputFile = open(outputName, fmWrite)
+  lm = newLanguageModel(order, charBased)
 
-else:
-  var
-    korpus_name = os.paramStr(1)
-    n = os.paramStr(2).parseInt
-    charBased = bool(os.paramStr(3).parseInt)
-    inputFile = open("t" & korpus_name & ".txt")
-    outputName = "k" & korpus_name & $charBased & $n
-    lm = initLanguageModel(n, charBased)
-    outputFile = open(outputName, fmWrite)
-  lm.train(inputFile)
-  lm.dump(outputFile)
-  echo outputName
+if order > 1:
+  var fallbackFile = open("trained_" & $korpus_name & $charBased & $1)
+  lm.fallback = load(fallbackFile)
+lm.train(inputFile)
+lm.dump(outputFile)
+echo "trained " & korpus_name
+echo outputName

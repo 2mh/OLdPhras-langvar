@@ -7,12 +7,12 @@ import osproc
 import subexes
 
 type TKorpus = enum k1600_1650, k1650_1700, k1700_1750, k1750_1800, k1800_1850, k1850_1900, k1900_2010
-const tests = 9
+const tests = 0
 const orders = 6
 const charBased = [0, 1]
-const resultFileName = "results_ $# $[chars|words]# $#"
-const perLineOutput = "perline actual $# result $# $#"
-const resultOutput = "correct testkorpus $#"
+const resultFileName = "results_test_$#_char_$#_order_$#"
+const perLineOutput = "actual $# result $# $#"
+const resultOutput = "correct testkorpus $# $#"
 
 template max_by(a: seq, by: expr): expr =
   block:
@@ -26,6 +26,8 @@ template max_by(a: seq, by: expr): expr =
     result
 
 template korpus_name(): expr = ($korpus).substr(1)
+template korpus_file(): expr = "train_" & $test & "." & korpus_name
+
 if os.paramCount() == 0:
   var prepare: seq[string] = @[]
   var commands: seq[string] = @[]
@@ -45,25 +47,27 @@ else:
     order = os.paramStr(3).parseInt
     korpi: array[TKorpus, PLanguageModel]
 
+  var commands: seq[string] = @[]
+  # generation
+  for korpus in low(TKorpus)..high(TKorpus):
+    echo "./korpusgenerator" & " " & korpusfile & " " & $charBased.ord & " " & $order
+    commands.add("./korpusgenerator" & " " & korpusfile & " " & $charBased.ord & " " & $order)
+  if execProcesses(commands) != 0:
+    raise newException(EIO, "corpi not written")
   for korpus in low(TKorpus)..high(TKorpus):
     var
-      inputFile = open("train_" & $test & "." & korpus_name)
-      lm = newLanguageModel(order, charBased)
+      inputFile = open("trained_" & korpus_file & $charBased & $order)
+      lm: PLanguageModel
+    lm = load(inputFile)
     if order > 1:
-      var fallbackFile = open($test & $korpus_name & $charBased & $order)
+      var fallbackFile = open("trained_" & korpus_file & $charBased & "1")
       lm.fallback = load(fallbackFile)
-    lm.train(inputFile)
     korpi[korpus] = lm
-    if order == 1:
-      var
-        outputName = $test & $korpus_name & $charBased & $order
-        outputFile = open(outputName, fmWrite)
-      lm.dump(outputFile)
     
   var resultFile = open(resultFileName % [$test, $CharBased.ord, $order], fmWrite)
   for korpus in low(TKorpus)..high(TKorpus):
     var
-      runs: seq[seq[tuple[korpus: TKorpus, probability: float]]]
+      runs: seq[seq[tuple[korpus: TKorpus, probability: float]]] = @[]
     for line in lines("test_" & $test & "." & korpus_name):
       # run the tests
       var run = recognize[TKorpus](korpi, line)
@@ -76,4 +80,4 @@ else:
     for results in runs:
       if max_by(results, probability).korpus == korpus:
         correct += 1
-    resultFile.writeln(resultOutput % [$(correct/len(runs))])
+    resultFile.writeln(resultOutput % [$korpus, $(correct/len(runs))])
