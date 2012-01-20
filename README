@@ -8,6 +8,7 @@ Dateien:
 20:80
 * langMod.py: Betreibt Sprachidentifikation mit n-gram-Modellen (1-6, wort- und zeichenbasiert)
 ** auch eine nimrod-Implementation für mehr Speed verfügbar
+* .nim-Files: Erledigt die Arbeit von langMod.py - aber in Nimrod
 
 Verwendung 1 (mit Nimrod-Code; schneller):
 ------------------------------------------
