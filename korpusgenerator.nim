@@ -13,12 +13,12 @@ var
   outputFile = open(outputName, fmWrite)
   lm = newLanguageModel(order, charBased)
 
-if order > 1:
-  var fallbackFile = open("trained_" & $korpus_name & $charBased & $1)
-  lm.fallback = load(fallbackFile)
 if existsFile(outputName):
   echo "already trained: " & korpus_name
 else:
+  if order > 1:
+    var fallbackFile = open("trained_" & $korpus_name & $charBased & $1)
+    lm.fallback = load(fallbackFile)
   lm.train(inputFile)
   lm.dump(outputFile)
   echo "trained " & korpus_name
