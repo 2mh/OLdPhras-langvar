@@ -52,7 +52,7 @@ else:
   # generation
   for korpus in low(TKorpus)..high(TKorpus):
     echo "./korpusgenerator" & " " & korpusfile & " " & $charBased.ord & " " & $order
-    #commands.add("./korpusgenerator" & " " & korpusfile & " " & $charBased.ord & " " & $order)
+    commands.add("./korpusgenerator" & " " & korpusfile & " " & $charBased.ord & " " & $order)
   if execProcesses(commands) != 0:
     raise newException(EIO, "corpi not written")
   else:
