@@ -118,8 +118,7 @@ proc load*(file: TFile): PLanguageModel =
   
   # guess model type
   var grams = first.split(dumpsplit)[1].split(joinChar)
-  if any(grams, len(it) > 1):
-    charBased = false
+  charBased = not any(grams, len(it) > 1)
   order = len(grams)
   
   # load file
@@ -155,9 +154,8 @@ iterator pairs*[T: enum, U](ary: array[T,U]): tuple[index: T, value: U] =
   for index in low(T)..high(T):
     yield(index, ary[index])
 
-proc recognize*[T](models: array[T, PLanguageModel], target: string): seq[tuple[korpus: T, probability: float]] =
+proc recognize*[T](models: array[T, PLanguageModel], target: string): array[T, tuple[korpus: T, probability: float]] =
   # it is advised to set model.fallback to the model of order 1
-  result = @[]
   var key: string
   for name, model in pairs(models):
     var probability: float
@@ -166,4 +164,4 @@ proc recognize*[T](models: array[T, PLanguageModel], target: string): seq[tuple[
       ngram.add(word)
       key = join(ngram,joinChar) # join hack
       probability += get(model, key, $word)
-    result.add((korpus: name, probability: probability.pow(2.0)))
+    result[name] = (korpus: name, probability: pow(2.0, probability))
