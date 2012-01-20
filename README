@@ -14,7 +14,7 @@ Verwendung:
 1. wget http://www.textgrid.de/fileadmin/TextGrid/digitale-bibliothek/Digitale-Bibliothek-Literatur-nur-Texte.zip
 2. unzip Digitale-Bibliothek-Literatur-nur-Texte.zip
 3. ./korpus_bastler.py Digitale-Bibliothek-Literatur
-4. ./korpus_splitter.py 2 # default-mässig bereits (nur) zweifache Kreuzvalidierung
+4. ./korpus_splitter.py 10 # default-mässig: 10-fache Kreuzvalidierung
 5. nimrod installieren (sehe https://github.com/Araq/Nimrod/wiki/Bootstrapping )
 6. nimrod c korpusgenerator
 7. nimrod c evaluator
