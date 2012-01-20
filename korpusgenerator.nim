@@ -16,7 +16,9 @@ var
 if order > 1:
   var fallbackFile = open("trained_" & $korpus_name & $charBased & $1)
   lm.fallback = load(fallbackFile)
-lm.train(inputFile)
-lm.dump(outputFile)
-echo "trained " & korpus_name
-echo outputName
+if existsFile(outputName):
+  echo "already trained: " & korpus_name
+else:
+  lm.train(inputFile)
+  lm.dump(outputFile)
+  echo "trained " & korpus_name
