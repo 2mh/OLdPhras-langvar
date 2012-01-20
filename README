@@ -23,6 +23,6 @@ Verwendung:
 9. ./evaluator
 10. grep correct result* # es wird jedes Resultat einzeln gedumpt, für weitere Analysen
 
-TODO
-----
-Automatisch generierte Tests haben ab und zu sehr kurze Zeilen, was die Erkennung extrem verzerrt
+nimrod bug fixing
+-----------------
+Gibt nen Bug, dass bei > 200 Zeichen langen Zeilen keine Wahrscheinlichkeiten zurückgegeben werden.
