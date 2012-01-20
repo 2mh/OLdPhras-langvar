@@ -15,5 +15,7 @@ Verwendung:
 2. unzip Digitale-Bibliothek-Literatur-nur-Texte.zip
 3. ./korpus_bastler.py Digitale-Bibliothek-Literatur
 4. ./korpus_splitter.py 2 # default-mässig bereits (nur) zweifache Kreuzvalidierung
-5. ... # Nimrod-Stuff
-6. ... # Nimrod-Stuff
+5. nimrod installieren (sehe https://github.com/Araq/Nimrod/wiki/Bootstrapping )
+6. nimrod c korpusgenerator
+7. nimrod c evaluator
+8. ./evaluator
