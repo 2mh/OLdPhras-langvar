@@ -6,25 +6,20 @@ import os
 import osproc
 import subexes
 
-type TKorpus = enum k1600_1650, k1650_1700, k1700_1750, k1750_1800, k1800_1850, k1850_1900, k1900_2010
-const tests = 0
-const orders = 6
-const charBased = [0, 1]
-const resultFileName = "results_test_$#_char_$#_order_$#"
-const perLineOutput = "actual $# result $# $#"
-const guessOutput = "guess actual $# result $# found $# times if above $#"
-const resultOutput = "correct testkorpus $# $# if above $#"
-
-template max_by(a, by: expr): expr =
-  block:
-    var
-      result = a[k1600_1650]
-      tmp = a[k1600_1650].by
-    for item in a:
-      if item.by > tmp:
-        result = item
-        tmp = item.by
-    result
+type
+  TKorpus = enum k1600_1650, k1650_1700, k1700_1750, k1750_1800, k1800_1850, k1850_1900, k1900_2010
+  TRun = object
+    result: TKorpus
+    length: int
+    
+const
+  tests = 0
+  orders = 6
+  charBased = [0, 1]
+  resultFileName = "results_test_$#_char_$#_order_$#"
+  perLineOutput = "actual $# result $# $#"
+  guessOutput = "guess actual $# result $# found $# times if above $#"
+  resultOutput = "correct testkorpus $# $# if above $#"
 
 template korpus_name(): expr = ($korpus).substr(1)
 template korpus_file(): expr = "train_" & $test & "." & korpus_name
@@ -70,24 +65,22 @@ else:
   var resultFile = open(resultFileName % [$test, $CharBased.ord, $order], fmWrite)
   for korpus in low(TKorpus)..high(TKorpus):
     var
-      run: array[TKorpus, tuple[korpus: TKorpus, probability: float]]
-      runs: seq[tuple[guesses: array[TKorpus, tuple[korpus: TKorpus, probability: float]], length: int]] = @[]
+      runs: seq[TRun] = @[]
     for line in lines("test_" & $test & "." & korpus_name):
       if line.len > 20:
+        var run: TRun
         # run the tests
-        run = recognize[TKorpus](korpi, line)
-        echo repr(line)
-        echo repr(run)
-        runs.add((guesses: run, length: len(line)))
+        run.result = recognize[TKorpus](korpi, line)
+        run.length = len(line)
+        runs.add(run)
     # accumulate the results
     for above in [20,50,100,150]:
-      var accumulatedGuesses: array[TKorpus, int]
-      for i, j in accumulatedGuesses: accumulatedGuesses[i] = 0 # clear the array
+      var accumulatedResults: array[TKorpus, int]
+      for i,j in accumulatedResults: accumulatedResults[i] = 0 # clear the array
       for run in runs:
         if run.length < above: continue
-        var guess = max_by(run.guesses, probability).korpus
-        inc(accumulated_guesses[guess])
-      for guess, count in accumulatedGuesses:
+        inc(accumulatedResults[run.result])
+      for guess, count in accumulatedResults:
         resultFile.writeln(guessOutput % [$korpus, $guess, $count, $above])
-      resultFile.writeln(resultOutput % [$korpus, formatFloat(accumulatedGuesses[korpus]/len(runs)), $above])
+      resultFile.writeln(resultOutput % [$korpus, formatFloat(accumulatedResults[korpus]/len(runs)), $above])
       resultFile.write("\n")

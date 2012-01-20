@@ -154,9 +154,11 @@ iterator pairs*[T: enum, U](ary: array[T,U]): tuple[index: T, value: U] =
   for index in low(T)..high(T):
     yield(index, ary[index])
 
-proc recognize*[T](models: array[T, PLanguageModel], target: string): array[T, tuple[korpus: T, probability: float]] =
+proc recognize*[T](models: array[T, PLanguageModel], target: string): T =
   # it is advised to set model.fallback to the model of order 1
-  var key: string
+  var
+    key: string
+    tmp_prob: float = neginf
   for name, model in pairs(models):
     var probability: float
     ngrams(target, model.order, model.charBased):
@@ -164,4 +166,6 @@ proc recognize*[T](models: array[T, PLanguageModel], target: string): array[T, t
       ngram.add(word)
       key = join(ngram,joinChar) # join hack
       probability += get(model, key, $word)
-    result[name] = (korpus: name, probability: probability)
+    if probability > tmp_prob:
+      result = name
+      tmp_prob = probability
