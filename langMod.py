@@ -120,7 +120,7 @@ if __name__ == "__main__":
         '''
 	timeRanges = [ "1600_1650", "1650_1700", "1700_1750", "1750_1800", "1800_1850", "1850_1900", "1900_2010"]
 	gramTypes = ["Z", "W"] # Z = symbol-based (Z) and word-based (W)
-	gramOrders = range(0,7) # defaults to n-gram orders 1-6
+	gramOrders = range(1,7) # defaults to n-gram orders 1-6
         setNumbers = range(0,10) # defaults to 10-fold cross-validation
 
 	if (len(sys.argv) > 1): 
