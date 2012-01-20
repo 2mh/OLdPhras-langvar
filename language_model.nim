@@ -164,4 +164,4 @@ proc recognize*[T](models: array[T, PLanguageModel], target: string): array[T, t
       ngram.add(word)
       key = join(ngram,joinChar) # join hack
       probability += get(model, key, $word)
-    result[name] = (korpus: name, probability: pow(2.0, probability))
+    result[name] = (korpus: name, probability: probability)
