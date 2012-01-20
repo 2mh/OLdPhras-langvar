@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# Für Python 2.7.2+
 # -*- coding: utf-8 -*-
 from __future__ import division
 '''
@@ -113,10 +114,14 @@ class LM():
             
 if __name__ == "__main__":
 
+	'''
+	Hier sind Anpassungen zu tätigen, falls z. B. keine Wort-n-gramme gewollt werden, oder nur bestimmte
+        n-gram-Ordnungen und keine 10-fache-, sondern eine andere - k-fache-Kreuzvalidierung ...
+        '''
 	timeRanges = [ "1600_1650", "1650_1700", "1700_1750", "1750_1800", "1800_1850", "1850_1900", "1900_2010"]
-	gramTypes = ["Z"] # Z = symbol-based (Z) and word-based (W)
-	gramOrders = range(2,4) # for n-gram order 1-6
-        setNumbers = range(0,2) # defaults to 10-fold cross-validation
+	gramTypes = ["Z", "W"] # Z = symbol-based (Z) and word-based (W)
+	gramOrders = range(0,7) # defaults to n-gram orders 1-6
+        setNumbers = range(0,10) # defaults to 10-fold cross-validation
 
 	if (len(sys.argv) > 1): 
 		for setNumber in setNumbers:
