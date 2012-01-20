@@ -67,7 +67,7 @@ class LM():
     def __init__(self, train_file,order=3,isWordBased=False):
         self.order = order
         self.isWordBased = isWordBased
-        self.lm  = self.train(train_file)
+        self.lm, self.total  = self.train(train_file)
 
     def train(self, train_file):
         
@@ -79,8 +79,9 @@ class LM():
             for history, word in generate_ngrams(tokens, self.order-1,self.isWordBased):
                 freqs[tuple(history)][word] += 1 # lists cannot be key, but tuples can
                 
+	total = sum(freqs[history].values())
         lm = self.normalize(freqs)
-        return lm
+        return lm, total
         
         
     #get conditional probabilities from frequency counts. Is called in train(), so you don't have to call it yourself.
@@ -107,52 +108,53 @@ class LM():
             try:
                 l += self.lm[tuple(history)][word]
             except KeyError:
-                l += -math.log(0.00000001)
-            
+		l += -math.log(sys.float_info[3]) # Verwende tiefste W'keit, wenn nicht gefunden
         return l
-        
             
 if __name__ == "__main__":
 
 	timeRanges = [ "1600_1650", "1650_1700", "1700_1750", "1750_1800", "1800_1850", "1850_1900", "1900_2010"]
-	gramTypes = ["Z","W"] # Z = symbol-based (Z) and word-based (W)
-	gramOrders = range(1,7) # for n-gram order 1-6
+	gramTypes = ["Z"] # Z = symbol-based (Z) and word-based (W)
+	gramOrders = range(2,4) # for n-gram order 1-6
+        setNumbers = range(0,2) # defaults to 10-fold cross-validation
 
 	if (len(sys.argv) > 1): 
-		for gramType in gramTypes:
-			isWordBased = False
-			if gramType == "W":
-				isWordBased = True
-			for gramOrder in gramOrders:
-				print "-"*72
-				mlm = MLM(gramOrder,isWordBased)
-				langModelsFileName = "langModels"+gramType+str(gramOrder)+".pyObj"
-				for timeRange in timeRanges:
-					print "Creating language model (n-gram-Type, n-gram-order, time range): " + gramType + " " + str(gramOrder) + " " + timeRange
-					corpusFileName = "t"+timeRange+".txt"
-					mlm.train(timeRange, corpusFileName)
-				print "-- Writing language model in file (n-gram-Type, n-gram-Order, no of time ranges): " + gramType + " " + str(gramOrder) + " " + str(len(timeRanges))
-				langModelsFile = open(langModelsFileName,"w")
-				cpickle.dump(mlm,langModelsFile)
-				langModelsFile.close()
-				print "---- written"
+		for setNumber in setNumbers:
+			for gramType in gramTypes:
+				isWordBased = False
+				if gramType == "W":
+					isWordBased = True
+				for gramOrder in gramOrders:
+					print "-"*72
+					mlm = MLM(gramOrder,isWordBased)
+					langModelsFileName = "langModels"+"-set"+str(setNumber)+gramType+str(gramOrder)+".pyObj"
+					for timeRange in timeRanges:
+						print "Creating language model (set no., n-gram-Type, n-gram-order, time range): " + str(setNumber) + " " + gramType + " " + str(gramOrder) + " " + timeRange
+						corpusFileName = "train_"+str(setNumber)+"."+timeRange
+						mlm.train(timeRange, corpusFileName)
+					print "-- Writing language model in file (set no., n-gram-Type, n-gram-Order, no of time ranges): " + str(setNumber) + " " + gramType + " " + str(gramOrder) + " " + str(len(timeRanges))
+					langModelsFile = open(langModelsFileName,"w")
+					cpickle.dump(mlm,langModelsFile,-1)
+					langModelsFile.close()
+					print "---- written"
 	else:
     	# Hier wird das Sprachmodell aus einer Datei genutzt; Geschwindigkeit++
-		fileNamePrefix = "e100-"
-		for gramType in gramTypes:
-			for gramOrder in gramOrders:
-				print 72*"-"
-				langModelsFileName = "langModels"+gramType+str(gramOrder)+".pyObj"
-				langModelsFile = open(langModelsFileName,"r")
-				print "Loading file: " + langModelsFileName
-				mlm = cpickle.load(langModelsFile)
-				langModelsFile.close()
-				for yb in timeRanges:
-					fileName = fileNamePrefix+yb+".txt"
-					e100File = open(fileName,"r")
-					print(yb+": Accuracy (gram type, gram order): " + gramType + " " + str(gramOrder))
-					print(accuracy(yb,fileName,mlm))
-					e100File.close()
+		fileNamePrefix = "test_"
+		for setNumber in setNumbers:
+			for gramType in gramTypes:
+				for gramOrder in gramOrders:
+					print 72*"-"
+					langModelsFileName = "langModels"+"-set"+str(setNumber)+gramType+str(gramOrder)+".pyObj"
+					langModelsFile = open(langModelsFileName,"r")
+					print "Loading file: " + langModelsFileName
+					mlm = cpickle.load(langModelsFile)
+					langModelsFile.close()
+					for yb in timeRanges:
+						fileName = fileNamePrefix+str(setNumber)+"."+yb
+						testFile = open(fileName,"r")
+						print(yb+": Accuracy (set no., gram type, gram order): " + str(setNumber) + " " + gramType + " " + str(gramOrder))
+						print(accuracy(yb,fileName,mlm))
+						testFile.close()
 """
 # Testsatz
 sentence_de = "So gewiß es ist, daß sich die protestantischen Land- und Dorfpfarrer ehedessen in dem besten Wohlstande ihres Hauswesens befunden haben, eben so unwidersprechlich ist es im Gegentheil, daß die meisten dieser Herren gegenwärtig von ihrer Besoldung und mit ihren Einkünften die nothdürftigen Ausgaben nicht mehr bestreiten können."
