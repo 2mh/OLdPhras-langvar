@@ -22,7 +22,3 @@ Verwendung:
   for file in {train,test}*; do iconv -f utf8 -t ISO-8859-1 -c < $file | sponge > $file; done
 9. ./evaluator
 10. grep correct result* # es wird jedes Resultat einzeln gedumpt, für weitere Analysen
-
-nimrod bug fixing
------------------
-Gibt nen Bug, dass bei > 200 Zeichen langen Zeilen keine Wahrscheinlichkeiten zurückgegeben werden.
