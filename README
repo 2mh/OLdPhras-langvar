@@ -21,3 +21,4 @@ Verwendung:
 8. optional: nimrod ist nicht unicode-aware, aber sollte eigentlich keine so grosse Rolle spielen
   for file in {train,test}*; do iconv -f utf8 -t ISO-8859-1 -c < $file | sponge > $file; done
 9. ./evaluator
+10. grep correct result* # es wird jedes Resultat einzeln gedumpt, für weitere Analysen
