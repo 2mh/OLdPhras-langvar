@@ -18,4 +18,6 @@ Verwendung:
 5. nimrod installieren (sehe https://github.com/Araq/Nimrod/wiki/Bootstrapping )
 6. nimrod c korpusgenerator
 7. nimrod c evaluator
-8. ./evaluator
+8. optional: nimrod ist nicht unicode-aware, aber sollte eigentlich keine so grosse Rolle spielen
+  for file in {train,test}*; do iconv -f utf8 -t ISO-8859-1 -c < $file | sponge > $file; done
+9. ./evaluator
